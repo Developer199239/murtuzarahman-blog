@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://murtuzarahman.com/sitemap-index.xml
