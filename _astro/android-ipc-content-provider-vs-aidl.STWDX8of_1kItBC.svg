@@ -1,0 +1,112 @@
+<svg viewBox="0 0 820 560" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+
+  <!-- Background -->
+  <rect width="820" height="560" fill="#0f172a" rx="12"/>
+
+  <!-- Title -->
+  <text x="410" y="36" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">Android IPC: Content Provider vs AIDL</text>
+
+  <!-- ══════════════════════════════════════════
+       DECISION TREE — top section
+  ══════════════════════════════════════════ -->
+
+  <!-- Root question box -->
+  <rect x="280" y="54" width="260" height="46" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+  <text x="410" y="73" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700">Need to share data between apps?</text>
+  <text x="410" y="90" text-anchor="middle" fill="#64748b" font-size="10">(Cross-process communication)</text>
+
+  <!-- YES branch line down-left -->
+  <line x1="340" y1="100" x2="200" y2="150" stroke="#64748b" stroke-width="1.5"/>
+  <text x="255" y="132" fill="#64748b" font-size="10">Primitive / tabular</text>
+
+  <!-- NO branch line down-right -->
+  <line x1="480" y1="100" x2="620" y2="150" stroke="#64748b" stroke-width="1.5"/>
+  <text x="520" y="132" fill="#64748b" font-size="10">Complex objects</text>
+
+  <!-- Content Provider box -->
+  <rect x="80" y="150" width="240" height="46" rx="8" fill="#14532d" stroke="#22c55e" stroke-width="2"/>
+  <text x="200" y="169" text-anchor="middle" fill="#86efac" font-size="12" font-weight="700">Content Provider</text>
+  <text x="200" y="186" text-anchor="middle" fill="#4ade80" font-size="10">Structured / primitive data</text>
+
+  <!-- AIDL box -->
+  <rect x="500" y="150" width="240" height="46" rx="8" fill="#1e1b4b" stroke="#818cf8" stroke-width="2"/>
+  <text x="620" y="169" text-anchor="middle" fill="#a5b4fc" font-size="12" font-weight="700">AIDL</text>
+  <text x="620" y="186" text-anchor="middle" fill="#818cf8" font-size="10">Complex / non-primitive objects</text>
+
+  <!-- ══════════════════════════════════════════
+       DETAIL CARDS — bottom two columns
+  ══════════════════════════════════════════ -->
+
+  <!-- ── Content Provider card ── -->
+  <rect x="40" y="220" width="340" height="290" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+
+  <!-- Header -->
+  <rect x="40" y="220" width="340" height="32" rx="8" fill="#15803d"/>
+  <rect x="40" y="236" width="340" height="16" fill="#15803d"/>
+  <text x="210" y="241" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Content Provider</text>
+
+  <!-- Row: What it carries -->
+  <rect x="56" y="262" width="308" height="38" rx="5" fill="#0f172a"/>
+  <text x="72" y="277" fill="#22c55e" font-size="10" font-weight="700">What it carries</text>
+  <text x="72" y="293" fill="#94a3b8" font-size="10">String, int, long, boolean — primitive / Cursor rows</text>
+
+  <!-- Row: Best for -->
+  <rect x="56" y="308" width="308" height="38" rx="5" fill="#0f172a"/>
+  <text x="72" y="323" fill="#22c55e" font-size="10" font-weight="700">Best for</text>
+  <text x="72" y="339" fill="#94a3b8" font-size="10">Reading structured records: contacts, media metadata</text>
+
+  <!-- Row: Real example -->
+  <rect x="56" y="354" width="308" height="50" rx="5" fill="#0f172a"/>
+  <text x="72" y="369" fill="#22c55e" font-size="10" font-weight="700">Real-world example</text>
+  <text x="72" y="385" fill="#94a3b8" font-size="10">Contacts app exposes names &amp; phone numbers.</text>
+  <text x="72" y="399" fill="#94a3b8" font-size="10">Your app queries them — all primitives via Cursor.</text>
+
+  <!-- Row: Mechanism -->
+  <rect x="56" y="412" width="308" height="38" rx="5" fill="#0f172a"/>
+  <text x="72" y="427" fill="#22c55e" font-size="10" font-weight="700">Mechanism</text>
+  <text x="72" y="443" fill="#94a3b8" font-size="10">URI-based query  →  ContentResolver  →  Cursor</text>
+
+  <!-- Row: Limitation -->
+  <rect x="56" y="458" width="308" height="38" rx="5" fill="#0f172a"/>
+  <text x="72" y="473" fill="#fbbf24" font-size="10" font-weight="700">⚠ Limitation</text>
+  <text x="72" y="489" fill="#94a3b8" font-size="10">Not designed for passing complex custom objects</text>
+
+  <!-- ── AIDL card ── -->
+  <rect x="440" y="220" width="340" height="290" rx="8" fill="#1e293b" stroke="#818cf8" stroke-width="1.5"/>
+
+  <!-- Header -->
+  <rect x="440" y="220" width="340" height="32" rx="8" fill="#4338ca"/>
+  <rect x="440" y="236" width="340" height="16" fill="#4338ca"/>
+  <text x="610" y="241" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">AIDL (Android Interface Definition Language)</text>
+
+  <!-- Row: What it carries -->
+  <rect x="456" y="262" width="308" height="38" rx="5" fill="#0f172a"/>
+  <text x="472" y="277" fill="#818cf8" font-size="10" font-weight="700">What it carries</text>
+  <text x="472" y="293" fill="#94a3b8" font-size="10">Parcelable objects — Bitmap, Person, any custom class</text>
+
+  <!-- Row: Best for -->
+  <rect x="456" y="308" width="308" height="38" rx="5" fill="#0f172a"/>
+  <text x="472" y="323" fill="#818cf8" font-size="10" font-weight="700">Best for</text>
+  <text x="472" y="339" fill="#94a3b8" font-size="10">Cross-app method calls with rich typed arguments</text>
+
+  <!-- Row: Real example -->
+  <rect x="456" y="354" width="308" height="50" rx="5" fill="#0f172a"/>
+  <text x="472" y="369" fill="#818cf8" font-size="10" font-weight="700">Real-world example</text>
+  <text x="472" y="385" fill="#94a3b8" font-size="10">A security/camera app returns a Bitmap to your app.</text>
+  <text x="472" y="399" fill="#94a3b8" font-size="10">You define the interface in an .aidl file and bind to it.</text>
+
+  <!-- Row: Mechanism -->
+  <rect x="456" y="412" width="308" height="38" rx="5" fill="#0f172a"/>
+  <text x="472" y="427" fill="#818cf8" font-size="10" font-weight="700">Mechanism</text>
+  <text x="472" y="443" fill="#94a3b8" font-size="10">.aidl interface  →  Binder IPC  →  stub/proxy pattern</text>
+
+  <!-- Row: Limitation -->
+  <rect x="456" y="458" width="308" height="38" rx="5" fill="#0f172a"/>
+  <text x="472" y="473" fill="#fbbf24" font-size="10" font-weight="700">⚠ Limitation</text>
+  <text x="472" y="489" fill="#94a3b8" font-size="10">More boilerplate; objects must implement Parcelable</text>
+
+  <!-- ══ Bottom note ══ -->
+  <rect x="40" y="524" width="740" height="24" rx="5" fill="#1e293b"/>
+  <text x="410" y="540" text-anchor="middle" fill="#64748b" font-size="10">In-app (same process): use Service bind/unbind.  Cross-app: use Content Provider (primitives) or AIDL (objects).</text>
+
+</svg>

@@ -1,0 +1,117 @@
+<svg viewBox="0 0 820 500" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+
+  <!-- Background -->
+  <rect width="820" height="500" fill="#0f172a" rx="12"/>
+
+  <!-- Title -->
+  <text x="410" y="38" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">Instagram Multi-Process Architecture</text>
+
+  <!-- ── RAM boundary ── -->
+  <rect x="20" y="55" width="780" height="420" rx="10" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="36" y="74" fill="#64748b" font-size="11">Device RAM</text>
+
+  <!-- ═══ Main Process box ═══ -->
+  <rect x="40" y="84" width="220" height="300" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="40" y="84" width="220" height="32" rx="8" fill="#3b82f6"/>
+  <rect x="40" y="100" width="220" height="16" fill="#3b82f6"/>
+  <text x="150" y="105" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Main Process</text>
+  <text x="150" y="120" text-anchor="middle" fill="#bfdbfe" font-size="10">(UI Thread)</text>
+
+  <!-- Main process contents -->
+  <rect x="56" y="130" width="188" height="34" rx="5" fill="#0f172a"/>
+  <text x="150" y="148" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="600">Activity / Fragment</text>
+  <text x="150" y="161" text-anchor="middle" fill="#94a3b8" font-size="9">UI rendering, user input</text>
+
+  <rect x="56" y="172" width="188" height="34" rx="5" fill="#0f172a"/>
+  <text x="150" y="190" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="600">View Drawing</text>
+  <text x="150" y="203" text-anchor="middle" fill="#94a3b8" font-size="9">16ms frame budget</text>
+
+  <rect x="56" y="214" width="188" height="34" rx="5" fill="#0f172a"/>
+  <text x="150" y="232" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="600">Lightweight GC</text>
+  <text x="150" y="245" text-anchor="middle" fill="#94a3b8" font-size="9">Small heap → fast GC runs</text>
+
+  <!-- Heap badge -->
+  <rect x="56" y="265" width="188" height="28" rx="5" fill="#1d4ed8" fill-opacity="0.4"/>
+  <text x="150" y="283" text-anchor="middle" fill="#93c5fd" font-size="10">Java Heap: ~50 MB</text>
+
+  <!-- Heap bar main -->
+  <rect x="56" y="300" width="188" height="16" rx="3" fill="#1e3a5f"/>
+  <rect x="56" y="300" width="50" height="16" rx="3" fill="#3b82f6"/>
+  <text x="150" y="312" text-anchor="middle" fill="#93c5fd" font-size="9">Used: ~25%</text>
+
+  <!-- ═══ Worker Process box ═══ -->
+  <rect x="300" y="84" width="220" height="300" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
+  <rect x="300" y="84" width="220" height="32" rx="8" fill="#a855f7"/>
+  <rect x="300" y="100" width="220" height="16" fill="#a855f7"/>
+  <text x="410" y="105" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Worker Process</text>
+  <text x="410" y="120" text-anchor="middle" fill="#e9d5ff" font-size="10">(Background, separate GC)</text>
+
+  <rect x="316" y="130" width="188" height="34" rx="5" fill="#0f172a"/>
+  <text x="410" y="148" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="600">Video Download</text>
+  <text x="410" y="161" text-anchor="middle" fill="#94a3b8" font-size="9">Large allocation / deallocation</text>
+
+  <rect x="316" y="172" width="188" height="34" rx="5" fill="#0f172a"/>
+  <text x="410" y="190" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="600">Bitmap Decoding</text>
+  <text x="410" y="203" text-anchor="middle" fill="#94a3b8" font-size="9">Heavy memory ops</text>
+
+  <rect x="316" y="214" width="188" height="34" rx="5" fill="#0f172a"/>
+  <text x="410" y="232" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="600">Image Filters</text>
+  <text x="410" y="245" text-anchor="middle" fill="#94a3b8" font-size="9">CPU / GPU intensive</text>
+
+  <rect x="316" y="265" width="188" height="28" rx="5" fill="#4c1d95" fill-opacity="0.5"/>
+  <text x="410" y="283" text-anchor="middle" fill="#d8b4fe" font-size="10">Java Heap: ~50 MB (isolated)</text>
+
+  <rect x="316" y="300" width="188" height="16" rx="3" fill="#2d1b69"/>
+  <rect x="316" y="300" width="140" height="16" rx="3" fill="#a855f7"/>
+  <text x="410" y="312" text-anchor="middle" fill="#e9d5ff" font-size="9">Used: ~75%  — GC fires here only</text>
+
+  <!-- ═══ C++ Native Layer box ═══ -->
+  <rect x="560" y="84" width="220" height="300" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
+  <rect x="560" y="84" width="220" height="32" rx="8" fill="#10b981"/>
+  <rect x="560" y="100" width="220" height="16" fill="#10b981"/>
+  <text x="670" y="105" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">C++ Native Layer (NDK)</text>
+  <text x="670" y="120" text-anchor="middle" fill="#d1fae5" font-size="10">(Bypasses JVM heap via JNI)</text>
+
+  <rect x="576" y="130" width="188" height="34" rx="5" fill="#0f172a"/>
+  <text x="670" y="148" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">Fresco (Bitmap cache)</text>
+  <text x="670" y="161" text-anchor="middle" fill="#94a3b8" font-size="9">Native memory — no GC pressure</text>
+
+  <rect x="576" y="172" width="188" height="34" rx="5" fill="#0f172a"/>
+  <text x="670" y="190" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">GPU Parallel Ops</text>
+  <text x="670" y="203" text-anchor="middle" fill="#94a3b8" font-size="9">Matrix mul, filters in parallel</text>
+
+  <rect x="576" y="214" width="188" height="34" rx="5" fill="#0f172a"/>
+  <text x="670" y="232" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">Data Decompression</text>
+  <text x="670" y="245" text-anchor="middle" fill="#94a3b8" font-size="9">4 MB → 100 MB, C++ speed</text>
+
+  <rect x="576" y="265" width="188" height="28" rx="5" fill="#064e3b" fill-opacity="0.6"/>
+  <text x="670" y="283" text-anchor="middle" fill="#6ee7b7" font-size="10">Native Heap: ~200 MB (from RAM)</text>
+
+  <rect x="576" y="300" width="188" height="16" rx="3" fill="#042f2e"/>
+  <rect x="576" y="300" width="170" height="16" rx="3" fill="#10b981"/>
+  <text x="670" y="312" text-anchor="middle" fill="#d1fae5" font-size="9">Not counted against app heap limit</text>
+
+  <!-- ═══ IPC arrows between Main ↔ Worker ═══ -->
+  <defs>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <!-- Main → Worker -->
+  <path d="M 260 234 L 300 234" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowBlue)" fill="none"/>
+  <!-- Worker → Main -->
+  <path d="M 300 244 L 260 244" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowBlue)" fill="none"/>
+  <text x="280" y="228" text-anchor="middle" fill="#64748b" font-size="9">IPC</text>
+
+  <!-- Worker → C++ -->
+  <path d="M 520 234 L 560 234" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowBlue)" fill="none"/>
+  <path d="M 560 244 L 520 244" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowBlue)" fill="none"/>
+  <text x="540" y="228" text-anchor="middle" fill="#64748b" font-size="9">JNI</text>
+
+  <!-- ═══ Bottom legend ═══ -->
+  <rect x="40" y="400" width="740" height="60" rx="6" fill="#1e293b"/>
+  <text x="410" y="418" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="600">Key Insight</text>
+  <text x="410" y="434" text-anchor="middle" fill="#64748b" font-size="10">Worker process GC fires frequently (heavy ops) but never blocks the Main process UI thread.</text>
+  <text x="410" y="450" text-anchor="middle" fill="#64748b" font-size="10">C++ native memory lives outside the JVM heap — no GC involved at all for those allocations.</text>
+
+</svg>
