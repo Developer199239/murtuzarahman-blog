@@ -1,0 +1,102 @@
+<svg viewBox="0 0 860 480" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="480" fill="#0f172a" rx="12"/>
+  <text x="430" y="34" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">Dependency Injection vs Inversion of Control</text>
+
+  <!-- ── Column headers ── -->
+  <text x="143" y="60" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">V0 — Hardcoded</text>
+  <text x="430" y="60" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">V1 — Dependency Injection</text>
+  <text x="717" y="60" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">V2 — Inversion of Control</text>
+
+  <!-- ══ V0 column ══ -->
+  <!-- Car box -->
+  <rect x="50" y="74" width="186" height="52" rx="7" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+  <text x="143" y="97" text-anchor="middle" fill="#fca5a5" font-size="12" font-weight="700">Car</text>
+  <text x="143" y="114" text-anchor="middle" fill="#94a3b8" font-size="10">creates Engine internally</text>
+  <!-- down arrow -->
+  <line x1="143" y1="126" x2="143" y2="156" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Engine box -->
+  <rect x="50" y="156" width="186" height="52" rx="7" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+  <text x="143" y="179" text-anchor="middle" fill="#fca5a5" font-size="12" font-weight="700">Engine</text>
+  <text x="143" y="196" text-anchor="middle" fill="#94a3b8" font-size="10">creates Motor internally</text>
+  <!-- down arrow -->
+  <line x1="143" y1="208" x2="143" y2="238" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Motor box -->
+  <rect x="50" y="238" width="186" height="44" rx="7" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+  <text x="143" y="265" text-anchor="middle" fill="#fca5a5" font-size="12" font-weight="700">Motor</text>
+
+  <!-- V0 label -->
+  <rect x="50" y="300" width="186" height="60" rx="7" fill="#1e1414"/>
+  <text x="143" y="318" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">Problem</text>
+  <text x="143" y="334" text-anchor="middle" fill="#64748b" font-size="9">Tightly coupled — changing</text>
+  <text x="143" y="348" text-anchor="middle" fill="#64748b" font-size="9">Motor forces changes up the chain.</text>
+
+  <!-- ══ V1 column ══ -->
+  <!-- UseV1 box -->
+  <rect x="337" y="74" width="186" height="44" rx="7" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <text x="430" y="97" text-anchor="middle" fill="#fcd34d" font-size="12" font-weight="700">UseV1 (caller)</text>
+  <text x="430" y="112" text-anchor="middle" fill="#94a3b8" font-size="9">creates Motor → Engine → Car</text>
+
+  <!-- arrows from UseV1 into each -->
+  <line x1="430" y1="118" x2="430" y2="148" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Motor injected -->
+  <rect x="337" y="148" width="186" height="40" rx="7" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="430" y="173" text-anchor="middle" fill="#fcd34d" font-size="11">Motor (passed in)</text>
+  <line x1="430" y1="188" x2="430" y2="210" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Engine injected -->
+  <rect x="337" y="210" width="186" height="40" rx="7" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="430" y="235" text-anchor="middle" fill="#fcd34d" font-size="11">Engine (Motor injected)</text>
+  <line x1="430" y1="250" x2="430" y2="272" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Car injected -->
+  <rect x="337" y="272" width="186" height="40" rx="7" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="430" y="297" text-anchor="middle" fill="#fcd34d" font-size="11">Car (Engine injected)</text>
+
+  <!-- V1 label -->
+  <rect x="337" y="325" width="186" height="48" rx="7" fill="#1c1708"/>
+  <text x="430" y="343" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="600">Dependency Injection</text>
+  <text x="430" y="358" text-anchor="middle" fill="#64748b" font-size="9">Objects passed from outside.</text>
+  <text x="430" y="372" text-anchor="middle" fill="#64748b" font-size="9">Still passes concrete classes.</text>
+
+  <!-- ══ V2 column ══ -->
+  <!-- Interface box -->
+  <rect x="624" y="74" width="186" height="44" rx="7" fill="#1e293b" stroke="#22d3ee" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="717" y="97" text-anchor="middle" fill="#67e8f9" font-size="12" font-weight="700">«interface» Motor</text>
+  <text x="717" y="112" text-anchor="middle" fill="#94a3b8" font-size="9">start(): String</text>
+
+  <!-- FastMotor & SlowMotor -->
+  <rect x="624" y="140" width="84" height="38" rx="6" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="666" y="163" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="600">FastMotor</text>
+  <rect x="726" y="140" width="84" height="38" rx="6" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="768" y="163" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="600">SlowMotor</text>
+  <!-- impl lines -->
+  <line x1="666" y1="140" x2="700" y2="118" stroke="#22d3ee" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="768" y1="140" x2="734" y2="118" stroke="#22d3ee" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- Engine takes Motor interface -->
+  <line x1="717" y1="178" x2="717" y2="206" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="624" y="206" width="186" height="40" rx="7" fill="#1e293b" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="717" y="231" text-anchor="middle" fill="#67e8f9" font-size="11">Engine (Motor interface)</text>
+  <line x1="717" y1="246" x2="717" y2="268" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Car -->
+  <rect x="624" y="268" width="186" height="40" rx="7" fill="#1e293b" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="717" y="293" text-anchor="middle" fill="#67e8f9" font-size="11">Car (Engine injected)</text>
+
+  <!-- V2 label -->
+  <rect x="624" y="325" width="186" height="48" rx="7" fill="#0c1f2b"/>
+  <text x="717" y="343" text-anchor="middle" fill="#22d3ee" font-size="10" font-weight="600">Inversion of Control</text>
+  <text x="717" y="358" text-anchor="middle" fill="#64748b" font-size="9">Pass interface, not class.</text>
+  <text x="717" y="372" text-anchor="middle" fill="#64748b" font-size="9">Swap Fast ↔ Slow at will.</text>
+
+  <!-- ── Bottom summary bar ── -->
+  <rect x="50" y="390" width="760" height="70" rx="7" fill="#1e293b"/>
+  <text x="430" y="412" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700">Key Takeaway</text>
+  <text x="430" y="430" text-anchor="middle" fill="#64748b" font-size="10">DI = inject concrete class from outside.   IoC = inject an interface — caller decides the behaviour at runtime.</text>
+  <text x="430" y="448" text-anchor="middle" fill="#64748b" font-size="10">Both avoid creating dependencies inside the class. IoC adds the extra flexibility of swapping implementations.</text>
+
+  <!-- arrowhead marker -->
+  <defs>
+    <marker id="arr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L7,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+</svg>
