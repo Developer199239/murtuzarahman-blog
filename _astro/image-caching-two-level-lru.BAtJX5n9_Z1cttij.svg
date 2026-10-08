@@ -1,0 +1,139 @@
+<svg viewBox="0 0 860 530" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="530" fill="#0f172a" rx="12"/>
+  <text x="430" y="34" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">Android Image Caching: Two-Level Cache Strategy</text>
+
+  <defs>
+    <marker id="ca" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+    <marker id="cg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/>
+    </marker>
+    <marker id="cy" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="cb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+
+  <!-- ══ LEFT: Two-Level Cache Waterfall ══ -->
+  <text x="220" y="58" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">Cache Lookup Waterfall</text>
+
+  <!-- Step 0: Request -->
+  <rect x="110" y="68" width="220" height="40" rx="7" fill="#1e293b" stroke="#60a5fa" stroke-width="2"/>
+  <text x="220" y="93" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700">Image Request (URL)</text>
+  <line x1="220" y1="108" x2="220" y2="128" stroke="#475569" stroke-width="1.5" marker-end="url(#ca)"/>
+
+  <!-- Step 1: Memory cache -->
+  <rect x="110" y="128" width="220" height="52" rx="7" fill="#1e293b" stroke="#22c55e" stroke-width="2"/>
+  <text x="220" y="149" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">① Memory Cache (RAM)</text>
+  <text x="220" y="165" text-anchor="middle" fill="#94a3b8" font-size="9">LruCache · ~10 MB · fast · volatile</text>
+
+  <!-- HIT branch -->
+  <line x1="330" y1="154" x2="380" y2="154" stroke="#22c55e" stroke-width="1.5" marker-end="url(#cg)"/>
+  <rect x="380" y="136" width="100" height="36" rx="5" fill="#14532d"/>
+  <text x="430" y="150" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">HIT ✅</text>
+  <text x="430" y="164" text-anchor="middle" fill="#4ade80" font-size="9">~0 s · instant</text>
+
+  <!-- MISS arrow down -->
+  <line x1="220" y1="180" x2="220" y2="210" stroke="#475569" stroke-width="1.5" marker-end="url(#ca)"/>
+  <text x="240" y="198" fill="#64748b" font-size="9">MISS</text>
+
+  <!-- Step 2: Disk cache -->
+  <rect x="110" y="210" width="220" height="52" rx="7" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <text x="220" y="231" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">② Disk Cache (File System)</text>
+  <text x="220" y="247" text-anchor="middle" fill="#94a3b8" font-size="9">DiskLruCache · ~20 MB · persistent</text>
+
+  <!-- HIT branch disk -->
+  <line x1="330" y1="236" x2="380" y2="236" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#cy)"/>
+  <rect x="380" y="218" width="100" height="36" rx="5" fill="#1c1708"/>
+  <text x="430" y="232" text-anchor="middle" fill="#fcd34d" font-size="10" font-weight="700">HIT ✅</text>
+  <text x="430" y="246" text-anchor="middle" fill="#fbbf24" font-size="9">~2 s · decode only</text>
+
+  <!-- after disk hit → store in memory -->
+  <line x1="480" y1="236" x2="510" y2="236" stroke="#475569" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ca)"/>
+  <rect x="510" y="220" width="130" height="32" rx="5" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="575" y="234" text-anchor="middle" fill="#64748b" font-size="9">→ store in memory cache</text>
+  <text x="575" y="246" text-anchor="middle" fill="#64748b" font-size="8">fast next time</text>
+
+  <!-- MISS arrow down -->
+  <line x1="220" y1="262" x2="220" y2="292" stroke="#475569" stroke-width="1.5" marker-end="url(#ca)"/>
+  <text x="240" y="280" fill="#64748b" font-size="9">MISS</text>
+
+  <!-- Step 3: Network -->
+  <rect x="110" y="292" width="220" height="52" rx="7" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+  <text x="220" y="313" text-anchor="middle" fill="#93c5fd" font-size="11" font-weight="700">③ Network Download</text>
+  <text x="220" y="329" text-anchor="middle" fill="#94a3b8" font-size="9">~5 s · download + decode</text>
+
+  <!-- after network → store in both caches -->
+  <line x1="330" y1="318" x2="380" y2="318" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#cb)"/>
+  <rect x="380" y="300" width="130" height="36" rx="5" fill="#1e3a5f"/>
+  <text x="445" y="315" text-anchor="middle" fill="#93c5fd" font-size="9">→ save to disk cache</text>
+  <text x="445" y="329" text-anchor="middle" fill="#93c5fd" font-size="9">→ save to memory cache</text>
+
+  <!-- Display -->
+  <line x1="220" y1="344" x2="220" y2="374" stroke="#475569" stroke-width="1.5" marker-end="url(#ca)"/>
+  <rect x="110" y="374" width="220" height="36" rx="7" fill="#1e293b" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="220" y="397" text-anchor="middle" fill="#93c5fd" font-size="11">Display in ImageView</text>
+
+  <!-- time table -->
+  <rect x="110" y="424" width="220" height="70" rx="7" fill="#1e293b"/>
+  <text x="220" y="442" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700">Load Time Summary</text>
+  <text x="130" y="458" fill="#22c55e" font-size="9">Memory hit</text>
+  <text x="310" y="458" text-anchor="end" fill="#22c55e" font-size="9">~0 s</text>
+  <text x="130" y="472" fill="#fcd34d" font-size="9">Disk hit (decode only)</text>
+  <text x="310" y="472" text-anchor="end" fill="#fcd34d" font-size="9">~2 s</text>
+  <text x="130" y="486" fill="#93c5fd" font-size="9">Network (first time)</text>
+  <text x="310" y="486" text-anchor="end" fill="#93c5fd" font-size="9">~7 s</text>
+
+  <!-- ══ RIGHT: LRU Eviction ══ -->
+  <text x="660" y="58" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">LRU Eviction — How Cache Stays Within Limit</text>
+
+  <!-- Cache capacity bar -->
+  <rect x="490" y="68" width="340" height="36" rx="7" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="660" y="82" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="700">Cache Limit: 10 slots (10 MB)</text>
+  <text x="660" y="97" text-anchor="middle" fill="#64748b" font-size="9">When full, evict the Least Recently Used entry</text>
+
+  <!-- LRU timeline -->
+  <rect x="490" y="116" width="340" height="260" rx="7" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+
+  <!-- entries with last-used date -->
+  <rect x="504" y="126" width="312" height="28" rx="4" fill="#0f172a"/>
+  <text x="520" y="145" fill="#94a3b8" font-size="10">🟡  Image A</text>
+  <text x="800" y="145" text-anchor="end" fill="#64748b" font-size="9">last used: Jan 4</text>
+
+  <rect x="504" y="160" width="312" height="28" rx="4" fill="#0f172a"/>
+  <text x="520" y="179" fill="#94a3b8" font-size="10">🔵  Image B</text>
+  <text x="800" y="179" text-anchor="end" fill="#64748b" font-size="9">last used: Jan 5</text>
+
+  <rect x="504" y="194" width="312" height="28" rx="4" fill="#0f172a"/>
+  <text x="520" y="213" fill="#94a3b8" font-size="10">🟢  Image C</text>
+  <text x="800" y="213" text-anchor="end" fill="#64748b" font-size="9">last used: Jan 6</text>
+
+  <rect x="504" y="228" width="312" height="28" rx="4" fill="#0f172a"/>
+  <text x="520" y="247" fill="#94a3b8" font-size="10">🔴  Image D</text>
+  <text x="800" y="247" text-anchor="end" fill="#64748b" font-size="9">last used: Jan 14</text>
+
+  <text x="660" y="278" text-anchor="middle" fill="#475569" font-size="10">… 6 more entries …</text>
+
+  <!-- full indicator -->
+  <rect x="504" y="290" width="312" height="28" rx="4" fill="#1c1708" stroke="#f59e0b" stroke-width="1"/>
+  <text x="660" y="309" text-anchor="middle" fill="#fcd34d" font-size="10">Cache FULL — 10 / 10 entries used</text>
+
+  <!-- new image arrives -->
+  <rect x="504" y="330" width="312" height="28" rx="4" fill="#1e1b4b" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="520" y="349" fill="#a5b4fc" font-size="10">⚫  New Image E needs to be stored</text>
+
+  <!-- eviction result -->
+  <rect x="504" y="368" width="312" height="28" rx="4" fill="#450a0a" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="660" y="387" text-anchor="middle" fill="#fca5a5" font-size="10">Evict Image A — last used Jan 4 (LRU) ❌</text>
+
+  <!-- LFU note -->
+  <rect x="490" y="408" width="340" height="86" rx="7" fill="#1e293b"/>
+  <text x="660" y="427" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700">LRU vs LFU</text>
+  <text x="504" y="445" fill="#64748b" font-size="9">LRU (Least Recently Used)  — evicts the item not touched for the</text>
+  <text x="504" y="459" fill="#64748b" font-size="9">longest time. Used by Android LruCache &amp; DiskLruCache.</text>
+  <text x="504" y="476" fill="#64748b" font-size="9">LFU (Least Frequently Used) — evicts the item accessed the fewest</text>
+  <text x="504" y="490" fill="#64748b" font-size="9">times overall. Better for stable hot-sets; more complex to implement.</text>
+</svg>

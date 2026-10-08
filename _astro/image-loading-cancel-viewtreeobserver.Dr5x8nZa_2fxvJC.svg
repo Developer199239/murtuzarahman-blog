@@ -1,0 +1,119 @@
+<svg viewBox="0 0 860 500" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="500" fill="#0f172a" rx="12"/>
+  <text x="430" y="34" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">RecyclerView Scrolling: Cancelling Unwanted Image Tasks</text>
+
+  <defs>
+    <marker id="ra" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+    <marker id="rg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/>
+    </marker>
+    <marker id="rr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <!-- ══ LEFT: Without Cancellation ══ -->
+  <text x="215" y="58" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="700">❌  Without Cancellation — Slow Loading</text>
+
+  <!-- Thread pool box -->
+  <rect x="30" y="68" width="370" height="36" rx="6" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+  <text x="215" y="91" text-anchor="middle" fill="#94a3b8" font-size="10">Thread Pool (5 threads available)</text>
+
+  <!-- Screen pages -->
+  <rect x="30" y="118" width="370" height="240" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+
+  <!-- page rows -->
+  <!-- Page 1 (off screen) -->
+  <rect x="44" y="128" width="342" height="38" rx="4" fill="#450a0a"/>
+  <text x="130" y="143" fill="#f87171" font-size="10" font-weight="600">Screen 1 (already scrolled past)</text>
+  <text x="130" y="158" fill="#64748b" font-size="9">Images 1–5 still downloading in queue…</text>
+  <rect x="356" y="136" width="16" height="16" rx="3" fill="#ef4444"/>
+  <text x="364" y="148" text-anchor="middle" fill="#fff" font-size="8">⏳</text>
+
+  <!-- Page 2 (off screen) -->
+  <rect x="44" y="172" width="342" height="38" rx="4" fill="#450a0a"/>
+  <text x="130" y="187" fill="#f87171" font-size="10" font-weight="600">Screen 2 (already scrolled past)</text>
+  <text x="130" y="202" fill="#64748b" font-size="9">Images 6–10 queued, not started yet…</text>
+  <rect x="356" y="180" width="16" height="16" rx="3" fill="#ef4444"/>
+  <text x="364" y="192" text-anchor="middle" fill="#fff" font-size="8">⏳</text>
+
+  <!-- Page 3 (off screen) -->
+  <rect x="44" y="216" width="342" height="38" rx="4" fill="#451a03"/>
+  <text x="130" y="231" fill="#fcd34d" font-size="10" font-weight="600">Screen 3 (scrolled past)</text>
+  <text x="130" y="246" fill="#64748b" font-size="9">Images 11–15 waiting in queue…</text>
+  <rect x="356" y="224" width="16" height="16" rx="3" fill="#f59e0b"/>
+  <text x="364" y="236" text-anchor="middle" fill="#fff" font-size="8">⏳</text>
+
+  <!-- Page 4 (visible - current) -->
+  <rect x="44" y="260" width="342" height="38" rx="4" fill="#14532d" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="130" y="275" fill="#86efac" font-size="10" font-weight="700">👁  Screen 4 (USER IS HERE)</text>
+  <text x="130" y="290" fill="#4ade80" font-size="9">Images 16–20 — still waiting in queue ← YOU WANT THESE</text>
+  <rect x="356" y="268" width="16" height="16" rx="3" fill="#22c55e"/>
+  <text x="364" y="280" text-anchor="middle" fill="#fff" font-size="8">⏳</text>
+
+  <!-- result label -->
+  <rect x="30" y="370" width="370" height="44" rx="6" fill="#450a0a"/>
+  <text x="215" y="388" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="700">Threads busy with screens 1–3 first.</text>
+  <text x="215" y="404" text-anchor="middle" fill="#94a3b8" font-size="9">Screen 4 images delayed — user sees blank placeholders.</text>
+
+  <!-- thread label -->
+  <text x="215" y="430" text-anchor="middle" fill="#64748b" font-size="9">All 5 threads blocked by already-scrolled-past screens → Screen 4 waits</text>
+
+  <!-- ══ DIVIDER ══ -->
+  <line x1="430" y1="54" x2="430" y2="490" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- ══ RIGHT: With Cancellation ══ -->
+  <text x="645" y="58" text-anchor="middle" fill="#22c55e" font-size="11" font-weight="700">✅  With Cancellation — Fast Loading</text>
+
+  <!-- ViewTreeObserver box -->
+  <rect x="446" y="68" width="388" height="56" rx="6" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+  <text x="640" y="88" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">ViewTreeObserver</text>
+  <text x="640" y="106" text-anchor="middle" fill="#94a3b8" font-size="10">Fires when ImageView enters / leaves the visible window</text>
+
+  <!-- Pages right side -->
+  <rect x="446" y="138" width="388" height="222" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+
+  <!-- page 1 right - cancelled -->
+  <rect x="460" y="148" width="360" height="38" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="580" y="163" fill="#64748b" font-size="10">Screen 1 — scrolled past</text>
+  <text x="580" y="177" fill="#94a3b8" font-size="9">ViewTreeObserver: ImageView left window</text>
+  <rect x="788" y="156" width="18" height="18" rx="3" fill="#334155"/>
+  <text x="797" y="169" text-anchor="middle" fill="#ef4444" font-size="9">✕</text>
+  <text x="797" y="182" text-anchor="middle" fill="#64748b" font-size="7">cancelled</text>
+
+  <!-- page 2 right - cancelled -->
+  <rect x="460" y="192" width="360" height="38" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="580" y="207" fill="#64748b" font-size="10">Screen 2 — scrolled past</text>
+  <text x="580" y="221" fill="#94a3b8" font-size="9">ViewTreeObserver: ImageView left window</text>
+  <rect x="788" y="200" width="18" height="18" rx="3" fill="#334155"/>
+  <text x="797" y="213" text-anchor="middle" fill="#ef4444" font-size="9">✕</text>
+  <text x="797" y="226" text-anchor="middle" fill="#64748b" font-size="7">cancelled</text>
+
+  <!-- page 3 right - cancelled -->
+  <rect x="460" y="236" width="360" height="38" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="580" y="251" fill="#64748b" font-size="10">Screen 3 — scrolled past</text>
+  <text x="580" y="265" fill="#94a3b8" font-size="9">ViewTreeObserver: ImageView left window</text>
+  <rect x="788" y="244" width="18" height="18" rx="3" fill="#334155"/>
+  <text x="797" y="257" text-anchor="middle" fill="#ef4444" font-size="9">✕</text>
+  <text x="797" y="270" text-anchor="middle" fill="#64748b" font-size="7">cancelled</text>
+
+  <!-- page 4 right - running! -->
+  <rect x="460" y="280" width="360" height="38" rx="4" fill="#14532d" stroke="#22c55e" stroke-width="2"/>
+  <text x="580" y="295" fill="#86efac" font-size="10" font-weight="700">👁  Screen 4 — USER IS HERE</text>
+  <text x="580" y="309" fill="#4ade80" font-size="9">All 5 threads FREE → images load immediately ✅</text>
+  <rect x="788" y="288" width="18" height="18" rx="3" fill="#15803d"/>
+  <text x="797" y="301" text-anchor="middle" fill="#86efac" font-size="9">▶</text>
+  <text x="797" y="314" text-anchor="middle" fill="#4ade80" font-size="7">running</text>
+
+  <!-- result right -->
+  <rect x="446" y="374" width="388" height="44" rx="6" fill="#14532d"/>
+  <text x="640" y="392" text-anchor="middle" fill="#22c55e" font-size="10" font-weight="700">Threads freed immediately when ImageView leaves screen.</text>
+  <text x="640" y="408" text-anchor="middle" fill="#94a3b8" font-size="9">Screen 4 images start downloading right away — fast, smooth scroll.</text>
+
+  <!-- bottom note -->
+  <rect x="30" y="452" width="800" height="36" rx="6" fill="#1e293b"/>
+  <text x="430" y="469" text-anchor="middle" fill="#64748b" font-size="10">Glide wraps each ImageView in a Target that listens to ViewTreeObserver. When the view detaches, Glide cancels the in-flight download/decode job.</text>
+  <text x="430" y="483" text-anchor="middle" fill="#64748b" font-size="9">This is the core of why Glide is fast in RecyclerView — it does not waste threads on images the user has already scrolled past.</text>
+</svg>
