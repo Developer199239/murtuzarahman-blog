@@ -1,0 +1,102 @@
+<svg viewBox="0 0 860 540" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="540" fill="#0f172a" rx="12"/>
+  <text x="430" y="32" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">Keep-Alive, Multiple Thread Pools &amp; Context Switching</text>
+
+  <!-- ══ TOP-LEFT: Keep-alive ══ -->
+  <rect x="30" y="46" width="390" height="150" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="225" y="65" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">Keep-Alive Time — Core vs Extra Threads</text>
+
+  <rect x="46" y="72" width="358" height="26" rx="4" fill="#1e3a5f"/>
+  <text x="225" y="85" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="600">Core threads (T1–T4): stay alive forever until shutdown() is called</text>
+  <text x="225" y="96" text-anchor="middle" fill="#475569" font-size="9">Idle but always ready — no timer, no termination</text>
+
+  <rect x="46" y="102" width="170" height="50" rx="4" fill="#2d1f3a"/>
+  <text x="131" y="117" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="700">Extra thread (T5) finishes task</text>
+  <text x="131" y="130" text-anchor="middle" fill="#94a3b8" font-size="9">Starts 30s keep-alive timer</text>
+  <text x="131" y="143" text-anchor="middle" fill="#ef4444" font-size="9">No task in 30s → terminated</text>
+
+  <rect x="224" y="102" width="180" height="50" rx="4" fill="#14532d"/>
+  <text x="314" y="117" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">Extra thread (T6) finishes task</text>
+  <text x="314" y="130" text-anchor="middle" fill="#94a3b8" font-size="9">New task arrives within 30s</text>
+  <text x="314" y="143" text-anchor="middle" fill="#4ade80" font-size="9">Timer resets → thread survives ✅</text>
+
+  <rect x="46" y="156" width="358" height="30" rx="4" fill="#0f172a"/>
+  <text x="225" y="168" text-anchor="middle" fill="#fcd34d" font-size="9">Keep-alive only applies to threads T5–T8 (beyond core size)</text>
+  <text x="225" y="180" text-anchor="middle" fill="#64748b" font-size="9">Core threads are always worth keeping; extra threads are seasonal</text>
+
+  <!-- ══ TOP-RIGHT: Multiple pools ══ -->
+  <rect x="440" y="46" width="390" height="150" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="635" y="65" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">Why Multiple Thread Pools?  (Play Store Example)</text>
+
+  <!-- One pool bad -->
+  <rect x="456" y="72" width="170" height="62" rx="4" fill="#450a0a"/>
+  <text x="541" y="87" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="700">❌ Single Thread Pool</text>
+  <text x="541" y="100" text-anchor="middle" fill="#94a3b8" font-size="9">100 app updates in queue</text>
+  <text x="541" y="113" text-anchor="middle" fill="#94a3b8" font-size="9">User taps Install Uber</text>
+  <text x="541" y="126" text-anchor="middle" fill="#f87171" font-size="9">Install waits behind all 100 updates</text>
+
+  <!-- Two pools good -->
+  <rect x="634" y="72" width="180" height="62" rx="4" fill="#14532d"/>
+  <text x="724" y="87" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">✅ Two Thread Pools</text>
+  <text x="724" y="100" text-anchor="middle" fill="#94a3b8" font-size="9">Update Pool: handles updates</text>
+  <text x="724" y="113" text-anchor="middle" fill="#94a3b8" font-size="9">Install Pool: handles installs</text>
+  <text x="724" y="126" text-anchor="middle" fill="#4ade80" font-size="9">Both run independently ✅</text>
+
+  <rect x="456" y="138" width="358" height="50" rx="4" fill="#0f172a"/>
+  <text x="635" y="153" text-anchor="middle" fill="#94a3b8" font-size="9">Rule: tasks with different priorities or natures belong in separate pools.</text>
+  <text x="635" y="166" text-anchor="middle" fill="#64748b" font-size="9">Updates can run slow in background. Installs need immediate response.</text>
+  <text x="635" y="179" text-anchor="middle" fill="#64748b" font-size="9">Mixing them in one pool lets low-priority work starve high-priority tasks.</text>
+
+  <!-- ══ BOTTOM: Context switching experiment ══ -->
+  <text x="430" y="218" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600">Why 4 Threads Beat 40 Threads — The Context Switching Cost</text>
+
+  <!-- CPU diagram -->
+  <rect x="30" y="228" width="260" height="160" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="160" y="248" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">Quad-Core CPU</text>
+  <rect x="46" y="256" width="100" height="40" rx="5" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="96" y="280" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">Core 1</text>
+  <rect x="154" y="256" width="100" height="40" rx="5" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="204" y="280" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">Core 2</text>
+  <rect x="46" y="302" width="100" height="40" rx="5" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="96" y="326" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">Core 3</text>
+  <rect x="154" y="302" width="100" height="40" rx="5" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="204" y="326" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">Core 4</text>
+  <text x="160" y="358" text-anchor="middle" fill="#64748b" font-size="9">4 cores = 4 true parallel tasks</text>
+  <text x="160" y="370" text-anchor="middle" fill="#64748b" font-size="9">40 threads share 4 cores via</text>
+  <text x="160" y="382" text-anchor="middle" fill="#64748b" font-size="9">time-slicing (1ms each)</text>
+
+  <!-- Experiment results -->
+  <rect x="306" y="228" width="524" height="160" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="568" y="248" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">Experiment: Same 10,000 Tasks — Different Thread Count</text>
+
+  <rect x="322" y="256" width="240" height="56" rx="5" fill="#450a0a"/>
+  <text x="442" y="271" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="700">Experiment 1 — 40 threads</text>
+  <text x="442" y="285" text-anchor="middle" fill="#94a3b8" font-size="9">10,000 tasks, each submitted separately</text>
+  <text x="442" y="298" text-anchor="middle" fill="#94a3b8" font-size="9">Each task: submit → queue → execute → finish</text>
+  <text x="442" y="311" text-anchor="middle" fill="#f87171" font-size="10" font-weight="600">Time: ~461 ms ❌</text>
+
+  <rect x="574" y="256" width="240" height="56" rx="5" fill="#14532d"/>
+  <text x="694" y="271" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">Experiment 2 — 4 threads</text>
+  <text x="694" y="285" text-anchor="middle" fill="#94a3b8" font-size="9">4 threads, each runs 2,500 tasks in a loop</text>
+  <text x="694" y="298" text-anchor="middle" fill="#94a3b8" font-size="9">No queue polling — thread keeps going</text>
+  <text x="694" y="311" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="600">Time: ~260 ms ✅ (faster!)</text>
+
+  <rect x="322" y="318" width="492" height="60" rx="5" fill="#0f172a"/>
+  <text x="568" y="333" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="600">Why? Context switching overhead.</text>
+  <text x="568" y="347" text-anchor="middle" fill="#94a3b8" font-size="9">In Exp 1: each task finishes → thread returns to queue → polls for next task → that overhead × 10,000 adds up.</text>
+  <text x="568" y="361" text-anchor="middle" fill="#94a3b8" font-size="9">In Exp 2: one thread runs 2,500 tasks in a tight loop — no queue overhead, no context switch between tasks.</text>
+  <text x="568" y="375" text-anchor="middle" fill="#64748b" font-size="9">More threads ≠ faster. Match thread count to CPU cores for computation tasks.</text>
+
+  <!-- Bottom rule -->
+  <rect x="30" y="400" width="796" height="48" rx="7" fill="#1e293b"/>
+  <text x="430" y="420" text-anchor="middle" fill="#f1f5f9" font-size="11" font-weight="700">Key Rules</text>
+  <text x="200" y="438" text-anchor="middle" fill="#94a3b8" font-size="10">Separate pools for different task priorities</text>
+  <text x="430" y="438" text-anchor="middle" fill="#94a3b8" font-size="10">CPU cores = true parallelism ceiling</text>
+  <text x="660" y="438" text-anchor="middle" fill="#94a3b8" font-size="10">More threads than cores = context-switch tax</text>
+
+  <!-- Bottom note -->
+  <rect x="30" y="456" width="796" height="60" rx="7" fill="#0f172a"/>
+  <text x="430" y="475" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="600">What about Kotlin Coroutines?</text>
+  <text x="430" y="490" text-anchor="middle" fill="#94a3b8" font-size="9">Coroutines take Experiment 2 further — instead of looping, one thread runs thousands of coroutines cooperatively.</text>
+  <text x="430" y="505" text-anchor="middle" fill="#64748b" font-size="9">Each coroutine suspends (not blocks) when waiting, freeing the thread immediately for another task. Discussed in depth in a later post.</text>
+</svg>

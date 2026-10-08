@@ -1,0 +1,112 @@
+<svg viewBox="0 0 860 540" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="540" fill="#0f172a" rx="12"/>
+  <text x="430" y="32" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">Android Thread Pool: Core Size, Max Size, Queue &amp; Rejection</text>
+
+  <!-- ══ TOP: Parameters ══ -->
+  <text x="430" y="58" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600">ThreadPoolExecutor — 4 Key Parameters</text>
+
+  <rect x="30" y="66" width="180" height="62" rx="7" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+  <text x="120" y="88" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">Core Pool Size</text>
+  <text x="120" y="104" text-anchor="middle" fill="#94a3b8" font-size="10">Always-alive threads</text>
+  <text x="120" y="120" text-anchor="middle" fill="#60a5fa" font-size="14" font-weight="900">4</text>
+
+  <rect x="228" y="66" width="180" height="62" rx="7" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
+  <text x="318" y="88" text-anchor="middle" fill="#c084fc" font-size="12" font-weight="700">Max Pool Size</text>
+  <text x="318" y="104" text-anchor="middle" fill="#94a3b8" font-size="10">Ceiling incl. core</text>
+  <text x="318" y="120" text-anchor="middle" fill="#c084fc" font-size="14" font-weight="900">8</text>
+
+  <rect x="426" y="66" width="180" height="62" rx="7" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <text x="516" y="88" text-anchor="middle" fill="#fcd34d" font-size="12" font-weight="700">Keep-Alive Time</text>
+  <text x="516" y="104" text-anchor="middle" fill="#94a3b8" font-size="10">Idle extra thread TTL</text>
+  <text x="516" y="120" text-anchor="middle" fill="#fcd34d" font-size="14" font-weight="900">30s</text>
+
+  <rect x="624" y="66" width="206" height="62" rx="7" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
+  <text x="727" y="88" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">Queue Capacity</text>
+  <text x="727" y="104" text-anchor="middle" fill="#94a3b8" font-size="10">Waiting task buffer</text>
+  <text x="727" y="120" text-anchor="middle" fill="#34d399" font-size="14" font-weight="900">10</text>
+
+  <!-- ══ MIDDLE: Step-by-step behaviour ══ -->
+  <text x="430" y="152" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600">Step-by-Step Behaviour (core=4, max=8, queue=10)</text>
+
+  <!-- Row 1 -->
+  <rect x="30" y="160" width="796" height="36" rx="6" fill="#1e3a5f"/>
+  <text x="46" y="173" fill="#60a5fa" font-size="10" font-weight="700">Tasks 1–4</text>
+  <text x="130" y="173" fill="#94a3b8" font-size="10">→ Thread 1–4 created on demand (pool warms up to core size). All 4 threads busy.</text>
+  <text x="46" y="188" fill="#475569" font-size="9">Tasks go directly to threads — queue stays empty.</text>
+
+  <!-- Row 2 -->
+  <rect x="30" y="200" width="796" height="36" rx="6" fill="#1c2a1c"/>
+  <text x="46" y="213" fill="#34d399" font-size="10" font-weight="700">Tasks 5–14</text>
+  <text x="130" y="213" fill="#94a3b8" font-size="10">→ Queue has space — all 10 tasks enter the queue. No new threads created yet.</text>
+  <text x="46" y="228" fill="#475569" font-size="9">Rule: extra threads are created only when the queue is full.</text>
+
+  <!-- Row 3 -->
+  <rect x="30" y="240" width="796" height="36" rx="6" fill="#2d1f3a"/>
+  <text x="46" y="253" fill="#c084fc" font-size="10" font-weight="700">Tasks 15–18</text>
+  <text x="130" y="253" fill="#94a3b8" font-size="10">→ Queue full (10/10). Pool creates extra threads T5–T8 up to max size of 8.</text>
+  <text x="46" y="268" fill="#475569" font-size="9">Extra threads T5–T8 handle these tasks while queue drains.</text>
+
+  <!-- Row 4 -->
+  <rect x="30" y="280" width="796" height="36" rx="6" fill="#450a0a"/>
+  <text x="46" y="293" fill="#ef4444" font-size="10" font-weight="700">Task 19+</text>
+  <text x="130" y="293" fill="#94a3b8" font-size="10">→ 8 threads busy + queue full (10/10) = absolute limit reached. New tasks rejected.</text>
+  <text x="46" y="308" fill="#fca5a5" font-size="9">Throws RejectedExecutionException. That is why production queue sizes are 100–300.</text>
+
+  <!-- ══ BOTTOM: Warm-up + Visual pool ══ -->
+  <!-- Thread warm-up -->
+  <rect x="30" y="330" width="390" height="190" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="225" y="350" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">Thread Warm-Up Behaviour</text>
+
+  <rect x="46" y="358" width="358" height="28" rx="4" fill="#0f172a"/>
+  <text x="225" y="370" text-anchor="middle" fill="#94a3b8" font-size="9">Task 1 submitted → Thread 1 created. Task 1 finishes.</text>
+  <text x="225" y="381" text-anchor="middle" fill="#64748b" font-size="9">Q: Does Task 2 reuse Thread 1? A: No — Thread 2 is created.</text>
+
+  <rect x="46" y="390" width="358" height="28" rx="4" fill="#0f172a"/>
+  <text x="225" y="404" text-anchor="middle" fill="#94a3b8" font-size="9">Pool "warms up" by creating all core threads as fast as possible.</text>
+  <text x="225" y="416" text-anchor="middle" fill="#64748b" font-size="9">T1, T2, T3, T4 are each created once before any reuse begins.</text>
+
+  <rect x="46" y="422" width="358" height="28" rx="4" fill="#14532d"/>
+  <text x="225" y="436" text-anchor="middle" fill="#86efac" font-size="9">After all 4 core threads exist → pool reuses idle threads for</text>
+  <text x="225" y="448" text-anchor="middle" fill="#4ade80" font-size="9">subsequent tasks. No more new thread creation until queue is full.</text>
+
+  <rect x="46" y="454" width="358" height="58" rx="4" fill="#0f172a"/>
+  <text x="60" y="470" fill="#60a5fa" font-size="9" font-weight="600">Why does this exist?</text>
+  <text x="60" y="484" fill="#64748b" font-size="9">Thread creation is expensive. Warming up all core threads</text>
+  <text x="60" y="498" fill="#64748b" font-size="9">upfront amortizes that cost — after warmup every new task</text>
+  <text x="60" y="512" fill="#64748b" font-size="9">gets a pre-built thread instantly.</text>
+
+  <!-- Visual pool diagram -->
+  <rect x="440" y="330" width="390" height="190" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="635" y="350" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">Thread Pool — Visual State (Tasks 15–18 scenario)</text>
+
+  <!-- Core threads -->
+  <text x="460" y="370" fill="#64748b" font-size="9" font-weight="600">CORE THREADS (T1–T4)</text>
+  <rect x="456" y="374" width="60" height="26" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="486" y="391" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="700">T1 busy</text>
+  <rect x="522" y="374" width="60" height="26" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="552" y="391" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="700">T2 busy</text>
+  <rect x="588" y="374" width="60" height="26" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="618" y="391" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="700">T3 busy</text>
+  <rect x="654" y="374" width="60" height="26" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="684" y="391" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="700">T4 busy</text>
+
+  <!-- Queue -->
+  <text x="460" y="418" fill="#64748b" font-size="9" font-weight="600">QUEUE (10/10 full)</text>
+  <rect x="456" y="422" width="350" height="24" rx="4" fill="#14532d"/>
+  <text x="631" y="438" text-anchor="middle" fill="#86efac" font-size="9">Task 5 · Task 6 · Task 7 · … · Task 14  (10 tasks queued)</text>
+
+  <!-- Extra threads -->
+  <text x="460" y="462" fill="#64748b" font-size="9" font-weight="600">EXTRA THREADS T5–T8 (created because queue is full)</text>
+  <rect x="456" y="466" width="76" height="26" rx="4" fill="#2d1f3a" stroke="#a855f7" stroke-width="1"/>
+  <text x="494" y="483" text-anchor="middle" fill="#c084fc" font-size="9">T5 → T15</text>
+  <rect x="538" y="466" width="76" height="26" rx="4" fill="#2d1f3a" stroke="#a855f7" stroke-width="1"/>
+  <text x="576" y="483" text-anchor="middle" fill="#c084fc" font-size="9">T6 → T16</text>
+  <rect x="620" y="466" width="76" height="26" rx="4" fill="#2d1f3a" stroke="#a855f7" stroke-width="1"/>
+  <text x="658" y="483" text-anchor="middle" fill="#c084fc" font-size="9">T7 → T17</text>
+  <rect x="702" y="466" width="76" height="26" rx="4" fill="#2d1f3a" stroke="#a855f7" stroke-width="1"/>
+  <text x="740" y="483" text-anchor="middle" fill="#c084fc" font-size="9">T8 → T18</text>
+
+  <!-- Rejection -->
+  <rect x="456" y="496" width="358" height="22" rx="4" fill="#450a0a"/>
+  <text x="635" y="511" text-anchor="middle" fill="#ef4444" font-size="9" font-weight="700">Task 19 → RejectedExecutionException (8 threads + 10 queue = full)</text>
+</svg>

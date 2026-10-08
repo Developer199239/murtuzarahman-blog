@@ -1,0 +1,92 @@
+<svg viewBox="0 0 860 500" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="500" fill="#0f172a" rx="12"/>
+  <text x="430" y="32" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">IO vs Computation Thread Pools in Android</text>
+
+  <!-- ══ TOP: Two columns ══ -->
+  <!-- Computation -->
+  <rect x="30" y="48" width="390" height="260" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="30" y="48" width="390" height="32" rx="8" fill="#1e3a5f"/>
+  <rect x="30" y="64" width="390" height="16" fill="#1e3a5f"/>
+  <text x="225" y="68" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">Computation / Dispatchers.Default</text>
+
+  <rect x="46" y="90" width="358" height="28" rx="4" fill="#0f172a"/>
+  <text x="225" y="103" text-anchor="middle" fill="#93c5fd" font-size="10" font-weight="600">Thread count = CPU cores (fixed, equal)</text>
+  <text x="225" y="114" text-anchor="middle" fill="#64748b" font-size="9">4-core device → 4 threads. 8-core → 8 threads.</text>
+
+  <rect x="46" y="122" width="358" height="60" rx="4" fill="#0f172a"/>
+  <text x="60" y="137" fill="#60a5fa" font-size="9" font-weight="600">Examples of computation tasks:</text>
+  <text x="60" y="151" fill="#94a3b8" font-size="9">• Matrix multiplication / sorting large lists</text>
+  <text x="60" y="164" fill="#94a3b8" font-size="9">• Bitmap manipulation (filter, resize, in RAM)</text>
+  <text x="60" y="177" fill="#94a3b8" font-size="9">• Encryption / hashing / JSON parsing</text>
+
+  <rect x="46" y="186" width="358" height="42" rx="4" fill="#14532d"/>
+  <text x="225" y="200" text-anchor="middle" fill="#86efac" font-size="9" font-weight="600">✅ Predictable execution time</text>
+  <text x="225" y="213" text-anchor="middle" fill="#4ade80" font-size="9">Same algorithm on same device → same time every run</text>
+  <text x="225" y="224" text-anchor="middle" fill="#4ade80" font-size="9">Deterministic → fixed threads are safe</text>
+
+  <rect x="46" y="232" width="358" height="60" rx="4" fill="#0f172a"/>
+  <text x="60" y="248" fill="#64748b" font-size="9" font-weight="600">Why fixed thread count?</text>
+  <text x="60" y="261" fill="#64748b" font-size="9">CPU is fully occupied during computation. More threads than cores</text>
+  <text x="60" y="274" fill="#64748b" font-size="9">only adds context-switching overhead without gaining parallelism.</text>
+  <text x="60" y="287" fill="#64748b" font-size="9">Tasks wait in queue — they will complete in predictable time.</text>
+
+  <!-- IO -->
+  <rect x="440" y="48" width="390" height="260" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="440" y="48" width="390" height="32" rx="8" fill="#1c2a1c"/>
+  <rect x="440" y="64" width="390" height="16" fill="#1c2a1c"/>
+  <text x="635" y="68" text-anchor="middle" fill="#fcd34d" font-size="12" font-weight="700">IO / Dispatchers.IO</text>
+
+  <rect x="456" y="90" width="358" height="28" rx="4" fill="#0f172a"/>
+  <text x="635" y="103" text-anchor="middle" fill="#fde68a" font-size="10" font-weight="600">Thread count can scale (core ≠ max)</text>
+  <text x="635" y="114" text-anchor="middle" fill="#64748b" font-size="9">e.g. core=4, max=64 — grows to handle blocked threads</text>
+
+  <rect x="456" y="122" width="358" height="60" rx="4" fill="#0f172a"/>
+  <text x="470" y="137" fill="#f59e0b" font-size="9" font-weight="600">Examples of IO tasks:</text>
+  <text x="470" y="151" fill="#94a3b8" font-size="9">• Network calls (REST API, WebSocket)</text>
+  <text x="470" y="164" fill="#94a3b8" font-size="9">• File read / write / disk operations</text>
+  <text x="470" y="177" fill="#94a3b8" font-size="9">• Database queries (SQLite, Room)</text>
+
+  <rect x="456" y="186" width="358" height="42" rx="4" fill="#450a0a"/>
+  <text x="635" y="200" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="600">❌ Unpredictable execution time</text>
+  <text x="635" y="213" text-anchor="middle" fill="#94a3b8" font-size="9">Network: 2s first call, 20s next (server load, latency)</text>
+  <text x="635" y="224" text-anchor="middle" fill="#94a3b8" font-size="9">File: locked by another process? Indeterminate wait.</text>
+
+  <rect x="456" y="232" width="358" height="60" rx="4" fill="#0f172a"/>
+  <text x="470" y="248" fill="#64748b" font-size="9" font-weight="600">Why scalable thread count?</text>
+  <text x="470" y="261" fill="#64748b" font-size="9">IO threads spend most of their time blocked — waiting for</text>
+  <text x="470" y="274" fill="#64748b" font-size="9">the network or disk. A blocked thread wastes its CPU slot.</text>
+  <text x="470" y="287" fill="#64748b" font-size="9">Extra threads fill those slots with other work.</text>
+
+  <!-- ══ MIDDLE: What happens when blocked ══ -->
+  <rect x="30" y="320" width="796" height="80" rx="8" fill="#1e293b"/>
+  <text x="430" y="340" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="700">IO Thread: Why Extra Threads Are Needed</text>
+
+  <rect x="46" y="348" width="230" height="42" rx="4" fill="#450a0a"/>
+  <text x="161" y="362" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="600">T1 starts network call</text>
+  <text x="161" y="375" text-anchor="middle" fill="#94a3b8" font-size="9">T1 is now blocked — waiting for server</text>
+  <text x="161" y="388" text-anchor="middle" fill="#94a3b8" font-size="9">T1 wastes its CPU slot doing nothing</text>
+
+  <text x="308" y="370" text-anchor="middle" fill="#475569" font-size="14">→</text>
+
+  <rect x="322" y="348" width="230" height="42" rx="4" fill="#1c2a1c"/>
+  <text x="437" y="362" text-anchor="middle" fill="#86efac" font-size="9" font-weight="600">T2 starts another network call</text>
+  <text x="437" y="375" text-anchor="middle" fill="#94a3b8" font-size="9">T2 also blocked — now 2 threads idle</text>
+  <text x="437" y="388" text-anchor="middle" fill="#94a3b8" font-size="9">Extra threads T5,T6 pick up queued work</text>
+
+  <text x="584" y="370" text-anchor="middle" fill="#475569" font-size="14">→</text>
+
+  <rect x="598" y="348" width="212" height="42" rx="4" fill="#14532d"/>
+  <text x="704" y="362" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="600">T1/T2 responses arrive</text>
+  <text x="704" y="375" text-anchor="middle" fill="#94a3b8" font-size="9">T1,T2 resume; T5,T6 finish their tasks</text>
+  <text x="704" y="388" text-anchor="middle" fill="#4ade80" font-size="9">Extra threads expire via keep-alive ✅</text>
+
+  <!-- ══ BOTTOM: Kotlin mapping ══ -->
+  <rect x="30" y="412" width="796" height="72" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="430" y="432" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">Kotlin Coroutines Mapping</text>
+  <rect x="46" y="440" width="360" height="36" rx="4" fill="#0f172a"/>
+  <text x="226" y="453" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="600">Dispatchers.Default → Computation Pool</text>
+  <text x="226" y="468" text-anchor="middle" fill="#64748b" font-size="9">Fixed threads = CPU core count. Use for CPU-heavy work.</text>
+  <rect x="420" y="440" width="390" height="36" rx="4" fill="#0f172a"/>
+  <text x="615" y="453" text-anchor="middle" fill="#fcd34d" font-size="10" font-weight="600">Dispatchers.IO → IO Pool</text>
+  <text x="615" y="468" text-anchor="middle" fill="#64748b" font-size="9">Scales up (default max=64). Use for network/disk/DB.</text>
+</svg>

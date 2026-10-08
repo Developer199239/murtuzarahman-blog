@@ -1,0 +1,125 @@
+<svg viewBox="0 0 860 540" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="540" fill="#0f172a" rx="12"/>
+  <text x="430" y="34" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">BitmapPool &amp; inBitmap: Eliminating GC-Caused UI Lag</text>
+
+  <defs>
+    <marker id="bp" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+    <marker id="bpg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/>
+    </marker>
+  </defs>
+
+  <!-- ══ TOP: Problem vs Solution ══ -->
+  <!-- Without Pool -->
+  <rect x="30" y="50" width="380" height="160" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+  <rect x="30" y="50" width="380" height="30" rx="8" fill="#7f1d1d"/>
+  <rect x="30" y="64" width="380" height="16" fill="#7f1d1d"/>
+  <text x="220" y="70" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">❌ Without BitmapPool — GC on every scroll</text>
+
+  <!-- scroll steps without pool -->
+  <rect x="46" y="90" width="348" height="26" rx="4" fill="#0f172a"/>
+  <text x="220" y="108" text-anchor="middle" fill="#94a3b8" font-size="10">Scroll 1: new bitmap1 created → scroll off → bitmap1 eligible for GC 🗑️</text>
+  <rect x="46" y="120" width="348" height="26" rx="4" fill="#0f172a"/>
+  <text x="220" y="138" text-anchor="middle" fill="#94a3b8" font-size="10">Scroll 2: new bitmap2 created → scroll off → bitmap2 eligible for GC 🗑️</text>
+  <rect x="46" y="150" width="348" height="26" rx="4" fill="#0f172a"/>
+  <text x="220" y="168" text-anchor="middle" fill="#94a3b8" font-size="10">Scroll 3: new bitmap3 created → GC fires 💥 → UI freezes for 16+ ms</text>
+  <rect x="46" y="178" width="348" height="22" rx="4" fill="#450a0a"/>
+  <text x="220" y="194" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">Result: GC fires on every scroll → dropped frames → lag ❌</text>
+
+  <!-- With Pool -->
+  <rect x="450" y="50" width="380" height="160" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="2"/>
+  <rect x="450" y="50" width="380" height="30" rx="8" fill="#14532d"/>
+  <rect x="450" y="64" width="380" height="16" fill="#14532d"/>
+  <text x="640" y="70" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">✅ With BitmapPool — GC rarely fires</text>
+
+  <rect x="466" y="90" width="348" height="26" rx="4" fill="#0f172a"/>
+  <text x="640" y="108" text-anchor="middle" fill="#94a3b8" font-size="10">Scroll 1: bitmap1 leaves screen → addToBitmapPool(bitmap1)</text>
+  <rect x="466" y="120" width="348" height="26" rx="4" fill="#0f172a"/>
+  <text x="640" y="138" text-anchor="middle" fill="#94a3b8" font-size="10">Scroll 2: getBitmapFromPool() → reuse bitmap1 memory for new image ♻️</text>
+  <rect x="466" y="150" width="348" height="26" rx="4" fill="#0f172a"/>
+  <text x="640" y="168" text-anchor="middle" fill="#94a3b8" font-size="10">Scroll 3: reuse again → no new allocation → GC not triggered ✅</text>
+  <rect x="466" y="178" width="348" height="22" rx="4" fill="#14532d"/>
+  <text x="640" y="194" text-anchor="middle" fill="#22c55e" font-size="10" font-weight="600">Result: GC fires once every ~5 scrolls → smooth UI ✅</text>
+
+  <!-- ══ MIDDLE: inBitmap Canvas Analogy ══ -->
+  <text x="430" y="232" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600">inBitmap: Reusing the Same Canvas</text>
+
+  <!-- Canvas analogy -->
+  <rect x="30" y="244" width="390" height="130" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="225" y="263" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">Without inBitmap — New canvas each time</text>
+
+  <rect x="46" y="272" width="160" height="60" rx="5" fill="#0f172a" stroke="#ef4444" stroke-width="1"/>
+  <text x="126" y="296" text-anchor="middle" fill="#fca5a5" font-size="18">🚗</text>
+  <text x="126" y="318" text-anchor="middle" fill="#94a3b8" font-size="9">bitmap1: Car (3×3 canvas)</text>
+
+  <text x="230" y="307" text-anchor="middle" fill="#64748b" font-size="11">→ discard</text>
+  <text x="230" y="320" text-anchor="middle" fill="#64748b" font-size="9">GC call 🗑️</text>
+
+  <rect x="254" y="272" width="160" height="60" rx="5" fill="#0f172a" stroke="#ef4444" stroke-width="1"/>
+  <text x="334" y="296" text-anchor="middle" fill="#fca5a5" font-size="18">🚌</text>
+  <text x="334" y="318" text-anchor="middle" fill="#94a3b8" font-size="9">bitmap2: Bus (new 3×3 canvas)</text>
+
+  <text x="225" y="354" text-anchor="middle" fill="#f87171" font-size="9">Two canvases bought → old one discarded → GC triggered</text>
+  <text x="225" y="368" text-anchor="middle" fill="#64748b" font-size="9">Memory: 2 × bitmap size used simultaneously</text>
+
+  <!-- With inBitmap -->
+  <rect x="440" y="244" width="390" height="130" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="635" y="263" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">With inBitmap — Same canvas reused</text>
+
+  <rect x="456" y="272" width="160" height="60" rx="5" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="536" y="291" text-anchor="middle" fill="#86efac" font-size="9">3×3 canvas (mutable)</text>
+  <text x="536" y="310" text-anchor="middle" fill="#86efac" font-size="16">🚗 → 🚌</text>
+  <text x="536" y="328" text-anchor="middle" fill="#4ade80" font-size="9">erase + redraw pixels</text>
+
+  <rect x="632" y="272" width="182" height="60" rx="5" fill="#0f172a"/>
+  <text x="723" y="288" fill="#94a3b8" font-size="9">options.inBitmap = oldBitmap</text>
+  <text x="723" y="303" fill="#94a3b8" font-size="9">options.inMutable = true</text>
+  <text x="723" y="318" fill="#fcd34d" font-size="9">// reuse memory of Car</text>
+  <text x="723" y="333" fill="#86efac" font-size="9">// for Bus bitmap</text>
+
+  <text x="635" y="354" text-anchor="middle" fill="#86efac" font-size="9">One canvas → erase colors → draw new image → same memory ✅</text>
+  <text x="635" y="368" text-anchor="middle" fill="#64748b" font-size="9">Condition: new size ≤ existing canvas size (otherwise buy new canvas)</text>
+
+  <!-- ══ BOTTOM: Memory Profiler + Cache Invalidation ══ -->
+  <!-- Memory profiler -->
+  <rect x="30" y="390" width="390" height="130" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="225" y="409" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">Memory Profiler Results</text>
+
+  <rect x="46" y="418" width="358" height="28" rx="4" fill="#0f172a"/>
+  <text x="60" y="430" fill="#60a5fa" font-size="9" font-weight="600">Base state:</text>
+  <text x="160" y="430" fill="#94a3b8" font-size="9">Main Activity loaded → ~136 MB</text>
+
+  <rect x="46" y="450" width="170" height="28" rx="4" fill="#14532d"/>
+  <text x="60" y="462" fill="#86efac" font-size="9" font-weight="600">inMutable = true ✅</text>
+  <text x="60" y="474" fill="#4ade80" font-size="9">Next Activity → ~140 MB (+4 MB only)</text>
+
+  <rect x="224" y="450" width="180" height="28" rx="4" fill="#450a0a"/>
+  <text x="238" y="462" fill="#fca5a5" font-size="9" font-weight="600">inMutable = false ❌</text>
+  <text x="238" y="474" fill="#f87171" font-size="9">Next Activity → ~200 MB (+60 MB spike!)</text>
+
+  <rect x="46" y="482" width="358" height="28" rx="4" fill="#1c1708"/>
+  <text x="225" y="494" text-anchor="middle" fill="#fcd34d" font-size="9">After GC (false case): drops back to ~130 MB</text>
+  <text x="225" y="506" text-anchor="middle" fill="#64748b" font-size="8">Reuse = no spike. No reuse = 60 MB spike → GC required to recover.</text>
+
+  <!-- Cache invalidation -->
+  <rect x="440" y="390" width="390" height="130" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="635" y="409" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">Cache Invalidation Gotcha</text>
+
+  <rect x="456" y="418" width="358" height="28" rx="4" fill="#0f172a"/>
+  <text x="635" y="430" text-anchor="middle" fill="#94a3b8" font-size="9">Server updates image at the same URL → your cache still serves old image</text>
+  <text x="635" y="442" text-anchor="middle" fill="#64748b" font-size="8">Cache key = URL. Content changed but URL didn't → stale image shown.</text>
+
+  <rect x="456" y="450" width="170" height="28" rx="4" fill="#450a0a"/>
+  <text x="541" y="462" text-anchor="middle" fill="#fca5a5" font-size="9">❌ Same URL</text>
+  <text x="541" y="474" text-anchor="middle" fill="#64748b" font-size="8">profile.png → old image</text>
+
+  <rect x="634" y="450" width="180" height="28" rx="4" fill="#14532d"/>
+  <text x="724" y="462" text-anchor="middle" fill="#86efac" font-size="9">✅ Versioned URL</text>
+  <text x="724" y="474" text-anchor="middle" fill="#4ade80" font-size="8">profile.png?v=2 → new image</text>
+
+  <rect x="456" y="482" width="358" height="28" rx="4" fill="#1e3a5f"/>
+  <text x="635" y="494" text-anchor="middle" fill="#93c5fd" font-size="9">Solution: Change URL when image updates (append version or content hash)</text>
+  <text x="635" y="506" text-anchor="middle" fill="#64748b" font-size="8">Cache treats it as a new entry → downloads fresh. Simplest &amp; most reliable fix.</text>
+</svg>

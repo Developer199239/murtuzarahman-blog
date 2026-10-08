@@ -1,0 +1,97 @@
+<svg viewBox="0 0 860 540" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="540" fill="#0f172a" rx="12"/>
+  <text x="430" y="32" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">Kotlin Coroutines Internals: Continuation &amp; CPS</text>
+
+  <!-- ══ TOP: Callback vs Coroutine ══ -->
+  <!-- Callback (manual interface) -->
+  <rect x="30" y="46" width="390" height="170" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="225" y="65" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">Without Coroutines — Manual Callback</text>
+
+  <rect x="46" y="72" width="358" height="80" rx="4" fill="#0f172a"/>
+  <text x="60" y="88" fill="#94a3b8" font-size="9">interface Listener {</text>
+  <text x="72" y="101" fill="#94a3b8" font-size="9">fun onComplete(result: String)</text>
+  <text x="60" y="114" fill="#94a3b8" font-size="9">}</text>
+  <text x="60" y="127" fill="#94a3b8" font-size="9">fun doTask(listener: Listener) {</text>
+  <text x="72" y="140" fill="#94a3b8" font-size="9">Thread { Thread.sleep(2000); listener.onComplete("done") }.start()</text>
+  <text x="60" y="153" fill="#94a3b8" font-size="9">}</text>
+
+  <rect x="46" y="156" width="358" height="50" rx="4" fill="#450a0a"/>
+  <text x="225" y="170" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="600">Problems: callback hell — nested interfaces for sequential tasks</text>
+  <text x="225" y="183" text-anchor="middle" fill="#94a3b8" font-size="9">doTask1 { doTask2 { doTask3 { ... } } }  — hard to read and maintain</text>
+  <text x="225" y="196" text-anchor="middle" fill="#64748b" font-size="9">Java requires an interface — result cannot be returned directly from background thread</text>
+
+  <!-- Coroutine version -->
+  <rect x="440" y="46" width="390" height="170" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="635" y="65" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">With Coroutines — Suspend Function</text>
+
+  <rect x="456" y="72" width="358" height="80" rx="4" fill="#0f172a"/>
+  <text x="470" y="88" fill="#94a3b8" font-size="9">suspend fun doTask(): String {</text>
+  <text x="482" y="101" fill="#94a3b8" font-size="9">delay(2000)            // no interface needed</text>
+  <text x="482" y="114" fill="#94a3b8" font-size="9">return "done"          // result returned directly</text>
+  <text x="470" y="127" fill="#94a3b8" font-size="9">}</text>
+  <text x="470" y="140" fill="#94a3b8" font-size="9">// Call site — looks synchronous</text>
+  <text x="470" y="153" fill="#4ade80" font-size="9">val result = doTask()  // waits without blocking</text>
+
+  <rect x="456" y="156" width="358" height="50" rx="4" fill="#14532d"/>
+  <text x="635" y="170" text-anchor="middle" fill="#86efac" font-size="9" font-weight="600">✅ Sequential code, asynchronous execution</text>
+  <text x="635" y="183" text-anchor="middle" fill="#94a3b8" font-size="9">No callbacks, no nesting. Kotlin compiles this to the interface pattern internally.</text>
+  <text x="635" y="196" text-anchor="middle" fill="#64748b" font-size="9">The interface is generated — you never write it.</text>
+
+  <!-- ══ MIDDLE: Continuation interface ══ -->
+  <rect x="30" y="228" width="796" height="110" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="430" y="248" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">What the Compiler Generates — Continuation Interface (CPS)</text>
+
+  <rect x="46" y="256" width="360" height="72" rx="4" fill="#0f172a"/>
+  <text x="60" y="271" fill="#64748b" font-size="9" font-weight="600">Coroutine library's Continuation interface:</text>
+  <text x="60" y="284" fill="#94a3b8" font-size="9">fun interface Continuation&lt;T&gt; {</text>
+  <text x="72" y="297" fill="#94a3b8" font-size="9">fun resumeWith(result: Result&lt;T&gt;)</text>
+  <text x="60" y="310" fill="#94a3b8" font-size="9">}</text>
+  <text x="60" y="323" fill="#64748b" font-size="9">// Exactly the same concept as your manual Listener interface</text>
+
+  <rect x="420" y="256" width="390" height="72" rx="4" fill="#0f172a"/>
+  <text x="434" y="271" fill="#64748b" font-size="9" font-weight="600">Suspend function → decompiled bytecode:</text>
+  <text x="434" y="284" fill="#94a3b8" font-size="9">fun doTask(continuation: Continuation&lt;String&gt;): Any {</text>
+  <text x="446" y="297" fill="#94a3b8" font-size="9">// switch on label (case 0, case 1...)</text>
+  <text x="446" y="310" fill="#94a3b8" font-size="9">// continuation.resumeWith(result) on completion</text>
+  <text x="434" y="323" fill="#94a3b8" font-size="9">}</text>
+
+  <!-- ══ BOTTOM-LEFT: 100k experiment ══ -->
+  <rect x="30" y="350" width="390" height="170" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="225" y="369" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">100k Coroutines vs 100k Threads</text>
+
+  <rect x="46" y="376" width="170" height="56" rx="4" fill="#14532d"/>
+  <text x="131" y="390" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">100k Coroutines ✅</text>
+  <text x="131" y="403" text-anchor="middle" fill="#94a3b8" font-size="9">repeat(100_000) {</text>
+  <text x="131" y="416" text-anchor="middle" fill="#94a3b8" font-size="9">  GlobalScope.launch { delay(5s) }</text>
+  <text x="131" y="429" text-anchor="middle" fill="#4ade80" font-size="9">App stays alive ✅</text>
+
+  <rect x="224" y="376" width="180" height="56" rx="4" fill="#450a0a"/>
+  <text x="314" y="390" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="700">100k Threads ❌</text>
+  <text x="314" y="403" text-anchor="middle" fill="#94a3b8" font-size="9">repeat(100_000) {</text>
+  <text x="314" y="416" text-anchor="middle" fill="#94a3b8" font-size="9">  Thread { sleep(5s) }.start()</text>
+  <text x="314" y="429" text-anchor="middle" fill="#f87171" font-size="9">OutOfMemoryError 💥</text>
+
+  <rect x="46" y="436" width="358" height="74" rx="4" fill="#0f172a"/>
+  <text x="225" y="450" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="600">Why coroutines don't OOM:</text>
+  <text x="225" y="463" text-anchor="middle" fill="#94a3b8" font-size="9">A coroutine is just an object (~few hundred bytes).</text>
+  <text x="225" y="476" text-anchor="middle" fill="#94a3b8" font-size="9">A thread reserves a full 512KB stack. 100k threads = ~50GB.</text>
+  <text x="225" y="489" text-anchor="middle" fill="#94a3b8" font-size="9">All coroutines share a handful of threads from the pool.</text>
+  <text x="225" y="502" text-anchor="middle" fill="#64748b" font-size="9">Suspended coroutines sit in memory as data — no OS thread needed.</text>
+
+  <!-- ══ BOTTOM-RIGHT: idle thread problem ══ -->
+  <rect x="440" y="350" width="390" height="170" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="635" y="369" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">Why Coroutines Beat Thread Pool: Idle Thread Problem</text>
+
+  <rect x="456" y="376" width="358" height="56" rx="4" fill="#450a0a"/>
+  <text x="635" y="390" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="700">Thread Pool — Thread 1 sits idle</text>
+  <text x="635" y="403" text-anchor="middle" fill="#94a3b8" font-size="9">Task1 (Thread1) → waits for Task2 result</text>
+  <text x="635" y="416" text-anchor="middle" fill="#94a3b8" font-size="9">Thread1 runs a while-loop internally — using CPU but doing nothing useful</text>
+  <text x="635" y="429" text-anchor="middle" fill="#f87171" font-size="9">Wasted CPU. Thread1 cannot help with Task4.</text>
+
+  <rect x="456" y="436" width="358" height="74" rx="4" fill="#14532d"/>
+  <text x="635" y="450" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">Coroutines — Thread 1 picks up Task4</text>
+  <text x="635" y="463" text-anchor="middle" fill="#94a3b8" font-size="9">Coroutine1 (on Thread1) suspends — thread is released</text>
+  <text x="635" y="476" text-anchor="middle" fill="#94a3b8" font-size="9">Thread1 immediately picks up Task4 (independent)</text>
+  <text x="635" y="489" text-anchor="middle" fill="#4ade80" font-size="9">No idle thread. Very little chance any thread sits unused.</text>
+  <text x="635" y="502" text-anchor="middle" fill="#64748b" font-size="9">Cooperative scheduling = maximum CPU utilisation.</text>
+</svg>
