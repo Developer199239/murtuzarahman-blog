@@ -1,0 +1,90 @@
+<svg viewBox="0 0 860 560" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="560" fill="#0f172a" rx="12"/>
+  <text x="430" y="30" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">Starter Pattern and Adapter Click Listener Best Practice</text>
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+    <marker id="ag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/>
+    </marker>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <!-- ══ TOP LEFT: Naive approach ══ -->
+  <rect x="20" y="44" width="390" height="186" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="215" y="64" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">❌ Naive Approach — Caller Knows Keys</text>
+
+  <rect x="36" y="72" width="358" height="88" rx="4" fill="#0f172a"/>
+  <text x="50" y="88" fill="#64748b" font-size="8" font-weight="600">From MainActivity — caller must know everything:</text>
+  <text x="50" y="103" fill="#94a3b8" font-size="9">val intent = Intent(this, TopHeadlineActivity::class.java)</text>
+  <text x="50" y="118" fill="#94a3b8" font-size="9">intent.putExtra("EXTRAS_COUNTRY", country)</text>
+  <text x="50" y="133" fill="#94a3b8" font-size="9">intent.putExtra("EXTRAS_SOURCE", source)</text>
+  <text x="50" y="148" fill="#94a3b8" font-size="9">startActivity(intent)</text>
+
+  <rect x="36" y="168" width="358" height="54" rx="4" fill="#450a0a"/>
+  <text x="215" y="184" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="700">Problems:</text>
+  <text x="50" y="200" fill="#f87171" font-size="8">• Caller must know every key string ("EXTRAS_COUNTRY", "EXTRAS_SOURCE")</text>
+  <text x="50" y="214" fill="#f87171" font-size="8">• Must read TopHeadlineActivity source to know what to pass</text>
+
+  <!-- ══ TOP RIGHT: Starter pattern ══ -->
+  <rect x="450" y="44" width="390" height="186" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="645" y="64" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">✅ Starter Pattern — Target Owns Intent Creation</text>
+
+  <rect x="466" y="72" width="358" height="88" rx="4" fill="#0f172a"/>
+  <text x="480" y="88" fill="#64748b" font-size="8" font-weight="600">Inside TopHeadlineActivity — knows its own keys:</text>
+  <text x="480" y="103" fill="#94a3b8" font-size="9">companion object {</text>
+  <text x="480" y="118" fill="#94a3b8" font-size="9">    fun getStartIntent(ctx: Context, country: String): Intent {</text>
+  <text x="480" y="133" fill="#94a3b8" font-size="9">        return Intent(ctx, TopHeadlineActivity::class.java)</text>
+  <text x="480" y="148" fill="#94a3b8" font-size="9">            .apply { putExtra(EXTRAS_COUNTRY, country) }</text>
+
+  <rect x="466" y="168" width="358" height="54" rx="4" fill="#14532d"/>
+  <text x="645" y="184" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">From MainActivity — simple call:</text>
+  <text x="480" y="200" fill="#86efac" font-size="8">startActivity(TopHeadlineActivity.getStartIntent(this, country))</text>
+  <text x="480" y="214" fill="#94a3b8" font-size="8">• No key strings to know  • Compiler enforces what to pass</text>
+
+  <!-- ══ MIDDLE: Benefits + Limitation ══ -->
+  <rect x="20" y="242" width="820" height="86" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="430" y="262" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">Benefits and Limitation</text>
+
+  <rect x="36" y="270" width="530" height="50" rx="4" fill="#0f172a"/>
+  <text x="50" y="285" fill="#86efac" font-size="8" font-weight="600">Benefits of the starter pattern:</text>
+  <text x="50" y="299" fill="#94a3b8" font-size="8">• Key strings are private to the target Activity — callers never see or mistype them</text>
+  <text x="50" y="313" fill="#94a3b8" font-size="8">• Method signature declares exactly what is required — the compiler catches missing args</text>
+
+  <rect x="578" y="270" width="246" height="50" rx="4" fill="#450a0a"/>
+  <text x="701" y="285" text-anchor="middle" fill="#fca5a5" font-size="8" font-weight="600">Limitation:</text>
+  <text x="592" y="299" fill="#f87171" font-size="8">Only for explicit intents (known target Activity).</text>
+  <text x="592" y="313" fill="#f87171" font-size="8">Implicit intents have no target class to define the method on.</text>
+
+  <!-- ══ BOTTOM: Adapter Click Listener ══ -->
+  <rect x="20" y="340" width="820" height="204" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="430" y="360" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">Adapter Click Listener — Adapter Notifies, Activity Decides</text>
+
+  <rect x="36" y="368" width="380" height="90" rx="4" fill="#0f172a"/>
+  <text x="226" y="384" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="700">❌ Bad: Adapter opens Activity directly</text>
+  <text x="50" y="400" fill="#94a3b8" font-size="8">class ArticleAdapter : RecyclerView.Adapter&lt;...&gt;() {</text>
+  <text x="50" y="414" fill="#94a3b8" font-size="8">    override fun onBindViewHolder(holder: ..., position: Int) {</text>
+  <text x="50" y="428" fill="#94a3b8" font-size="8">        holder.itemView.setOnClickListener {</text>
+  <text x="50" y="442" fill="#f87171" font-size="8">            context.startActivity(Intent(context, DetailActivity::class.java))</text>
+  <text x="50" y="454" fill="#64748b" font-size="8">        // adapter should NOT navigate — single responsibility violated</text>
+
+  <rect x="444" y="368" width="380" height="90" rx="4" fill="#0f172a"/>
+  <text x="634" y="384" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">✅ Good: Pass click listener as HOF</text>
+  <text x="458" y="400" fill="#94a3b8" font-size="8">typealias ItemClickListener = (Article) -&gt; Unit</text>
+  <text x="458" y="414" fill="#94a3b8" font-size="8">class ArticleAdapter(</text>
+  <text x="458" y="428" fill="#94a3b8" font-size="8">    val onItemClick: ItemClickListener</text>
+  <text x="458" y="442" fill="#94a3b8" font-size="8">) : RecyclerView.Adapter&lt;...&gt;() {</text>
+  <text x="458" y="454" fill="#86efac" font-size="8">    // holder.itemView.setOnClickListener { onItemClick(article) }</text>
+
+  <rect x="36" y="466" width="788" height="28" rx="4" fill="#1e3a5f"/>
+  <text x="430" y="479" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="600">In Activity: val adapter = ArticleAdapter { article →</text>
+  <text x="430" y="491" text-anchor="middle" fill="#86efac" font-size="9">    startActivity(DetailActivity.getStartIntent(this, article.url))  // activity decides navigation</text>
+
+  <rect x="36" y="500" width="788" height="34" rx="4" fill="#0f172a"/>
+  <text x="430" y="515" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="700">Adapter responsibility = show data  |  Activity responsibility = handle navigation</text>
+  <text x="430" y="529" text-anchor="middle" fill="#94a3b8" font-size="8">HOF as click listener + typealias for readability + starter pattern for navigation = clean separation of concerns</text>
+</svg>

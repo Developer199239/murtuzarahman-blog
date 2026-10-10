@@ -1,0 +1,95 @@
+<svg viewBox="0 0 860 500" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="500" fill="#0f172a" rx="12"/>
+  <text x="430" y="30" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">HTTP Methods — HEAD, POST, PUT, and PATCH</text>
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- ══ HEAD ══ -->
+  <rect x="20" y="44" width="820" height="110" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="430" y="64" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">HEAD Request — Headers Only, No Body</text>
+
+  <rect x="36" y="72" width="390" height="72" rx="4" fill="#0f172a"/>
+  <text x="231" y="88" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="600">Client → Server</text>
+  <text x="50" y="103" fill="#94a3b8" font-size="8">HEAD /videos/big-movie.mp4 HTTP/1.1</text>
+  <text x="50" y="116" fill="#64748b" font-size="8">Exactly like GET but server sends back ONLY headers — no response body</text>
+  <text x="50" y="129" fill="#64748b" font-size="8">Useful when you need metadata without paying the cost of downloading the full content</text>
+
+  <rect x="444" y="72" width="390" height="72" rx="4" fill="#0f172a"/>
+  <text x="639" y="88" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="600">Use Cases</text>
+  <text x="458" y="103" fill="#94a3b8" font-size="8">① Check file exists + get size before downloading a 2 GB video</text>
+  <text x="458" y="116" fill="#94a3b8" font-size="8">   → read Content-Length from response header, skip GET if too large</text>
+  <text x="458" y="129" fill="#94a3b8" font-size="8">② Check Last-Modified / ETag — if not changed, skip re-fetching (saves data)</text>
+
+  <!-- ══ POST ══ -->
+  <rect x="20" y="166" width="820" height="104" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="430" y="186" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">POST Request — Send Data, Create a Resource</text>
+
+  <rect x="36" y="194" width="390" height="66" rx="4" fill="#0f172a"/>
+  <text x="231" y="210" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="600">What POST does</text>
+  <text x="50" y="226" fill="#94a3b8" font-size="8">Carries a request body (JSON, form data, multipart…)</text>
+  <text x="50" y="239" fill="#94a3b8" font-size="8">GET cannot carry a large body in the URL — POST is the correct choice for sending data</text>
+  <text x="50" y="252" fill="#94a3b8" font-size="8">Creates a new resource on the server → returns 201 Created</text>
+
+  <rect x="444" y="194" width="390" height="66" rx="4" fill="#0f172a"/>
+  <text x="639" y="210" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="600">Real example: Sign-up</text>
+  <text x="458" y="226" fill="#94a3b8" font-size="8">POST /users  { "email": "...", "password": "..." }</text>
+  <text x="458" y="239" fill="#94a3b8" font-size="8">→ Server inserts a new row in the users table</text>
+  <text x="458" y="252" fill="#94a3b8" font-size="8">→ Returns the newly created user object with generated ID</text>
+
+  <!-- ══ PUT vs PATCH ══ -->
+  <rect x="20" y="282" width="820" height="114" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="430" y="302" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">PUT vs PATCH — Updating an Existing Resource</text>
+
+  <rect x="36" y="310" width="390" height="76" rx="4" fill="#0f172a"/>
+  <text x="231" y="326" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="600">PUT — Replace Entire Resource</text>
+  <text x="50" y="342" fill="#94a3b8" font-size="8">PUT /users/42  { "name": "Alice", "email": "a@b.com", "age": 30 }</text>
+  <text x="50" y="356" fill="#94a3b8" font-size="8">Must send the complete object — omitting a field sets it to null/default</text>
+  <text x="50" y="370" fill="#fcd34d" font-size="8">Replaces the whole record. Every field must be present.</text>
+  <text x="50" y="382" fill="#64748b" font-size="8">Idempotent: calling PUT with same data multiple times = same result</text>
+
+  <rect x="444" y="310" width="390" height="76" rx="4" fill="#0f172a"/>
+  <text x="639" y="326" text-anchor="middle" fill="#86efac" font-size="9" font-weight="600">PATCH — Update Specific Fields Only</text>
+  <text x="458" y="342" fill="#94a3b8" font-size="8">PATCH /users/42  { "age": 31 }</text>
+  <text x="458" y="356" fill="#94a3b8" font-size="8">Only fields included in the body are updated — other fields untouched</text>
+  <text x="458" y="370" fill="#86efac" font-size="8">Efficient: send only what changed. Preferred for partial updates.</text>
+  <text x="458" y="382" fill="#64748b" font-size="8">More common in modern REST APIs than full PUT replacements</text>
+
+  <!-- ══ BOTTOM: Summary table ══ -->
+  <rect x="20" y="408" width="820" height="76" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <text x="430" y="428" text-anchor="middle" fill="#f1f5f9" font-size="10" font-weight="700">HTTP Method Quick Reference</text>
+
+  <!-- header row -->
+  <text x="86" y="444" text-anchor="middle" fill="#64748b" font-size="8" font-weight="700">Method</text>
+  <text x="230" y="444" text-anchor="middle" fill="#64748b" font-size="8" font-weight="700">Has Body?</text>
+  <text x="380" y="444" text-anchor="middle" fill="#64748b" font-size="8" font-weight="700">Purpose</text>
+  <text x="600" y="444" text-anchor="middle" fill="#64748b" font-size="8" font-weight="700">Creates / Updates?</text>
+  <text x="770" y="444" text-anchor="middle" fill="#64748b" font-size="8" font-weight="700">Idempotent?</text>
+  <!-- rows -->
+  <text x="86" y="458" text-anchor="middle" fill="#c084fc" font-size="8">HEAD</text>
+  <text x="230" y="458" text-anchor="middle" fill="#94a3b8" font-size="8">No</text>
+  <text x="380" y="458" text-anchor="middle" fill="#94a3b8" font-size="8">Fetch metadata only</text>
+  <text x="600" y="458" text-anchor="middle" fill="#94a3b8" font-size="8">Neither</text>
+  <text x="770" y="458" text-anchor="middle" fill="#86efac" font-size="8">Yes</text>
+
+  <text x="86" y="472" text-anchor="middle" fill="#60a5fa" font-size="8">POST</text>
+  <text x="230" y="472" text-anchor="middle" fill="#94a3b8" font-size="8">Yes</text>
+  <text x="380" y="472" text-anchor="middle" fill="#94a3b8" font-size="8">Create a new resource</text>
+  <text x="600" y="472" text-anchor="middle" fill="#94a3b8" font-size="8">Creates</text>
+  <text x="770" y="472" text-anchor="middle" fill="#f87171" font-size="8">No</text>
+
+  <text x="86" y="486" text-anchor="middle" fill="#fcd34d" font-size="8">PUT</text>
+  <text x="230" y="486" text-anchor="middle" fill="#94a3b8" font-size="8">Yes</text>
+  <text x="380" y="486" text-anchor="middle" fill="#94a3b8" font-size="8">Replace entire resource</text>
+  <text x="600" y="486" text-anchor="middle" fill="#94a3b8" font-size="8">Updates (full)</text>
+  <text x="770" y="486" text-anchor="middle" fill="#86efac" font-size="8">Yes</text>
+
+  <text x="86" y="499" text-anchor="middle" fill="#86efac" font-size="8">PATCH</text>
+  <text x="230" y="499" text-anchor="middle" fill="#94a3b8" font-size="8">Yes (partial)</text>
+  <text x="380" y="499" text-anchor="middle" fill="#94a3b8" font-size="8">Update specific fields only</text>
+  <text x="600" y="499" text-anchor="middle" fill="#94a3b8" font-size="8">Updates (partial)</text>
+  <text x="770" y="499" text-anchor="middle" fill="#94a3b8" font-size="8">Depends</text>
+</svg>

@@ -1,0 +1,103 @@
+<svg viewBox="0 0 860 540" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="540" fill="#0f172a" rx="12"/>
+  <text x="430" y="32" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">flowOn: Thread Control in Kotlin Flow</text>
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- ══ LEFT: flowOn rule diagram ══ -->
+  <rect x="30" y="48" width="380" height="420" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="220" y="68" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">flowOn Rule: Bridge Above / Below</text>
+
+  <!-- launch dispatcher -->
+  <rect x="46" y="76" width="348" height="28" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="220" y="88" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">viewModelScope.launch(Dispatchers.Main)</text>
+  <text x="220" y="98" text-anchor="middle" fill="#475569" font-size="8">← sets the base dispatcher for collect</text>
+
+  <line x1="220" y1="104" x2="220" y2="118" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- operators above first flowOn -->
+  <rect x="46" y="118" width="348" height="48" rx="4" fill="#2d1f3a"/>
+  <text x="220" y="133" text-anchor="middle" fill="#c084fc" font-size="9">.doLongRunningTask()   ← runs on Default</text>
+  <text x="220" y="147" text-anchor="middle" fill="#c084fc" font-size="9">.filter { ... }         ← runs on Default</text>
+  <text x="220" y="161" text-anchor="middle" fill="#c084fc" font-size="9">.map { ... }            ← runs on Default</text>
+
+  <!-- first flowOn -->
+  <rect x="46" y="170" width="348" height="24" rx="4" fill="#1e3a5f" stroke="#22c55e" stroke-width="2"/>
+  <text x="220" y="186" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">.flowOn(Dispatchers.Default)  ← bridge ①</text>
+
+  <line x1="220" y1="194" x2="220" y2="208" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- between bridges -->
+  <rect x="46" y="208" width="348" height="36" rx="4" fill="#2d1a00"/>
+  <text x="220" y="222" text-anchor="middle" fill="#fcd34d" font-size="9">.filter { ... }   ← runs on Main (bridge ② below)</text>
+  <text x="220" y="236" text-anchor="middle" fill="#fcd34d" font-size="9">⚠️ between bridge ① and bridge ②</text>
+
+  <!-- second flowOn -->
+  <rect x="46" y="248" width="348" height="24" rx="4" fill="#1e3a5f" stroke="#22c55e" stroke-width="2"/>
+  <text x="220" y="264" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">.flowOn(Dispatchers.Main)  ← bridge ②</text>
+
+  <line x1="220" y1="272" x2="220" y2="286" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- below second bridge -->
+  <rect x="46" y="286" width="348" height="36" rx="4" fill="#2d1f3a"/>
+  <text x="220" y="300" text-anchor="middle" fill="#c084fc" font-size="9">.map { ... }     ← runs on Default (bridge ③ below)</text>
+  <text x="220" y="314" text-anchor="middle" fill="#c084fc" font-size="9">.filter { ... }  ← runs on Default</text>
+
+  <!-- third flowOn -->
+  <rect x="46" y="326" width="348" height="24" rx="4" fill="#1e3a5f" stroke="#22c55e" stroke-width="2"/>
+  <text x="220" y="342" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">.flowOn(Dispatchers.Default)  ← bridge ③</text>
+
+  <line x1="220" y1="350" x2="220" y2="364" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- collect -->
+  <rect x="46" y="364" width="348" height="36" rx="4" fill="#1e3a5f"/>
+  <text x="220" y="380" text-anchor="middle" fill="#60a5fa" font-size="9">.filter { ... }   ← runs on Main (launch dispatcher)</text>
+  <text x="220" y="394" text-anchor="middle" fill="#60a5fa" font-size="9">.map { ... }      ← runs on Main</text>
+
+  <rect x="46" y="404" width="348" height="28" rx="4" fill="#14532d" stroke="#22c55e" stroke-width="1"/>
+  <text x="220" y="422" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">.collect { ... }   ← runs on Main (launch dispatcher)</text>
+
+  <!-- rule box -->
+  <rect x="46" y="440" width="348" height="22" rx="4" fill="#0f172a"/>
+  <text x="220" y="455" text-anchor="middle" fill="#fcd34d" font-size="9">Rule: flowOn controls operators ABOVE it, not below</text>
+
+  <!-- ══ RIGHT: Common mistake ══ -->
+  <rect x="430" y="48" width="400" height="200" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="630" y="68" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">❌ The Most Common Mistake</text>
+
+  <rect x="446" y="76" width="368" height="130" rx="4" fill="#0f172a"/>
+  <text x="460" y="91" fill="#64748b" font-size="9" font-weight="600">Code that looks like it runs on IO — but doesn't:</text>
+  <text x="460" y="106" fill="#94a3b8" font-size="9">viewModelScope.launch(Dispatchers.IO) {</text>
+  <text x="472" y="119" fill="#ef4444" font-size="9">val data = loadFromNetwork()  // ← runs on IO ✅</text>
+  <text x="472" y="132" fill="#94a3b8" font-size="9">flow {</text>
+  <text x="484" y="145" fill="#ef4444" font-size="9">  emit(data)  // ← inside flow builder</text>
+  <text x="472" y="158" fill="#94a3b8" font-size="9">}.flowOn(Dispatchers.IO)</text>
+  <text x="472" y="171" fill="#94a3b8" font-size="9">.collect { ... }</text>
+  <text x="460" y="184" fill="#94a3b8" font-size="9">}</text>
+  <text x="460" y="197" fill="#fca5a5" font-size="9">⚠️ loadFromNetwork() is OUTSIDE the flow { } builder — not controlled by flowOn</text>
+
+  <!-- Right: correct version -->
+  <rect x="430" y="260" width="400" height="200" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="630" y="280" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">✅ The Correct Pattern</text>
+
+  <rect x="446" y="288" width="368" height="130" rx="4" fill="#0f172a"/>
+  <text x="460" y="303" fill="#64748b" font-size="9" font-weight="600">Move the work inside the flow { } builder:</text>
+  <text x="460" y="318" fill="#94a3b8" font-size="9">viewModelScope.launch(Dispatchers.Main) {</text>
+  <text x="472" y="331" fill="#94a3b8" font-size="9">flow {</text>
+  <text x="484" y="344" fill="#86efac" font-size="9">  val data = loadFromNetwork()  // ← inside builder</text>
+  <text x="484" y="357" fill="#4ade80" font-size="9">  emit(data)                    // ← controlled by flowOn</text>
+  <text x="472" y="370" fill="#94a3b8" font-size="9">}.flowOn(Dispatchers.IO)       // ← builder runs on IO ✅</text>
+  <text x="472" y="383" fill="#94a3b8" font-size="9">.collect { updateUI(it) }      // ← runs on Main ✅</text>
+  <text x="460" y="396" fill="#94a3b8" font-size="9">}</text>
+  <text x="460" y="409" fill="#86efac" font-size="9">✅ Network call happens on IO; UI update on Main</text>
+
+  <!-- Bottom note -->
+  <rect x="430" y="472" width="400" height="60" rx="8" fill="#1e293b"/>
+  <text x="630" y="490" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="600">Remember</text>
+  <text x="630" y="506" text-anchor="middle" fill="#64748b" font-size="9">flowOn only controls code inside the Flow pipeline.</text>
+  <text x="630" y="520" text-anchor="middle" fill="#64748b" font-size="9">Anything written outside the flow { } block runs on the launch dispatcher.</text>
+</svg>

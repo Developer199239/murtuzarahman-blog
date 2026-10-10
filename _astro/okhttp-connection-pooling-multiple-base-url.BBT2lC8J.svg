@@ -1,0 +1,114 @@
+<svg viewBox="0 0 860 580" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="580" fill="#0f172a" rx="12"/>
+  <text x="430" y="30" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">OkHttp Connection Pooling and Multiple Base URLs</text>
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+    <marker id="ag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/>
+    </marker>
+  </defs>
+
+  <!-- ══ TOP: Connection Pooling ══ -->
+  <rect x="20" y="44" width="820" height="168" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="430" y="64" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">OkHttp Connection Pooling — Two Steps in Every Request</text>
+
+  <!-- Step boxes -->
+  <rect x="36" y="72" width="370" height="50" rx="4" fill="#2d1a00" stroke="#f59e0b" stroke-width="1"/>
+  <text x="221" y="89" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="700">Step 1 — Verification (DNS + TLS Handshake)</text>
+  <text x="221" y="104" text-anchor="middle" fill="#94a3b8" font-size="8">"Can we talk to each other?" — ~2 sec overhead</text>
+  <text x="221" y="115" text-anchor="middle" fill="#64748b" font-size="8">Common for every server — happens once per new connection</text>
+
+  <rect x="454" y="72" width="370" height="50" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="639" y="89" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="700">Step 2 — Data Transfer</text>
+  <text x="639" y="104" text-anchor="middle" fill="#94a3b8" font-size="8">Actual request + response body — ~5 sec</text>
+  <text x="639" y="115" text-anchor="middle" fill="#64748b" font-size="8">Depends on payload size and server processing time</text>
+
+  <!-- Timeline -->
+  <rect x="36" y="132" width="790" height="70" rx="4" fill="#0f172a"/>
+  <text x="46" y="148" fill="#64748b" font-size="8" font-weight="700">WITHOUT pooling</text>
+  <rect x="36" y="152" width="80" height="14" rx="2" fill="#f59e0b"/>
+  <text x="76" y="162" text-anchor="middle" fill="#0f172a" font-size="7" font-weight="700">DNS+TLS 2s</text>
+  <rect x="116" y="152" width="130" height="14" rx="2" fill="#3b82f6"/>
+  <text x="181" y="162" text-anchor="middle" fill="#fff" font-size="7">Data 5s</text>
+  <text x="260" y="162" fill="#f87171" font-size="8">= 7s ✗</text>
+  <rect x="310" y="152" width="80" height="14" rx="2" fill="#f59e0b"/>
+  <text x="350" y="162" text-anchor="middle" fill="#0f172a" font-size="7" font-weight="700">DNS+TLS 2s</text>
+  <rect x="390" y="152" width="130" height="14" rx="2" fill="#3b82f6"/>
+  <text x="455" y="162" text-anchor="middle" fill="#fff" font-size="7">Data 5s</text>
+  <text x="534" y="162" fill="#f87171" font-size="8">= 7s ✗  (every request!)</text>
+
+  <text x="46" y="185" fill="#64748b" font-size="8" font-weight="700">WITH pooling</text>
+  <rect x="36" y="188" width="80" height="14" rx="2" fill="#f59e0b"/>
+  <text x="76" y="198" text-anchor="middle" fill="#0f172a" font-size="7" font-weight="700">DNS+TLS 2s</text>
+  <rect x="116" y="188" width="130" height="14" rx="2" fill="#3b82f6"/>
+  <text x="181" y="198" text-anchor="middle" fill="#fff" font-size="7">Data 5s = 7s</text>
+  <text x="270" y="198" fill="#94a3b8" font-size="7">→ connection kept in pool →</text>
+  <rect x="410" y="188" width="130" height="14" rx="2" fill="#3b82f6"/>
+  <text x="475" y="198" text-anchor="middle" fill="#fff" font-size="7">Data 5s only ✅</text>
+  <text x="556" y="198" fill="#86efac" font-size="8">= 5s ✅  (step 1 skipped!)</text>
+
+  <!-- ══ MIDDLE: 3 Approaches ══ -->
+  <rect x="20" y="224" width="820" height="210" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="430" y="244" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">Three Approaches for Multiple Base URLs</text>
+
+  <!-- Method 1 - Discarded -->
+  <rect x="36" y="252" width="248" height="172" rx="4" fill="#450a0a" stroke="#ef4444" stroke-width="1"/>
+  <text x="160" y="268" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="700">Method 1 — DISCARDED ✗</text>
+  <text x="160" y="282" text-anchor="middle" fill="#f87171" font-size="8">2 Retrofit + 1 OkHttp</text>
+  <rect x="46" y="288" width="228" height="52" rx="3" fill="#0f172a"/>
+  <text x="60" y="302" fill="#94a3b8" font-size="7">Retrofit1 ──┐</text>
+  <text x="60" y="315" fill="#94a3b8" font-size="7">              ├── OkHttp ── alternates</text>
+  <text x="60" y="328" fill="#94a3b8" font-size="7">Retrofit2 ──┘</text>
+  <text x="160" y="352" text-anchor="middle" fill="#f87171" font-size="8">One OkHttp switches between</text>
+  <text x="160" y="364" text-anchor="middle" fill="#f87171" font-size="8">servers — pool always misses.</text>
+  <text x="160" y="376" text-anchor="middle" fill="#f87171" font-size="8">Every request costs 7 sec. ✗</text>
+  <text x="160" y="414" text-anchor="middle" fill="#64748b" font-size="8">Never use this pattern</text>
+
+  <!-- Method 2 -->
+  <rect x="296" y="252" width="248" height="172" rx="4" fill="#14532d" stroke="#22c55e" stroke-width="1"/>
+  <text x="420" y="268" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">Method 2 ✅</text>
+  <text x="420" y="282" text-anchor="middle" fill="#86efac" font-size="8">2 Retrofit + 2 OkHttp</text>
+  <rect x="306" y="288" width="228" height="52" rx="3" fill="#0f172a"/>
+  <text x="320" y="302" fill="#94a3b8" font-size="7">Retrofit1 ── OkHttp1 ── Server1</text>
+  <text x="320" y="320" fill="#94a3b8" font-size="7">Retrofit2 ── OkHttp2 ── Server2</text>
+  <text x="420" y="352" text-anchor="middle" fill="#86efac" font-size="8">Each OkHttp dedicated to one</text>
+  <text x="420" y="364" text-anchor="middle" fill="#86efac" font-size="8">server — pool hits consistently.</text>
+  <text x="420" y="376" text-anchor="middle" fill="#86efac" font-size="8">2nd request = 5 sec ✅</text>
+  <text x="420" y="395" text-anchor="middle" fill="#fcd34d" font-size="8">Use when: random 50/50 traffic</text>
+  <text x="420" y="408" text-anchor="middle" fill="#fcd34d" font-size="8">between both servers</text>
+
+  <!-- Method 3 -->
+  <rect x="556" y="252" width="248" height="172" rx="4" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1"/>
+  <text x="680" y="268" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="700">Method 3 ✅</text>
+  <text x="680" y="282" text-anchor="middle" fill="#60a5fa" font-size="8">1 Retrofit + @Url annotation</text>
+  <rect x="566" y="288" width="228" height="52" rx="3" fill="#0f172a"/>
+  <text x="580" y="302" fill="#94a3b8" font-size="7">@GET</text>
+  <text x="580" y="315" fill="#94a3b8" font-size="7">suspend fun getData(@Url url: String)</text>
+  <text x="580" y="328" fill="#94a3b8" font-size="7">  // pass full URL at call site</text>
+  <text x="680" y="352" text-anchor="middle" fill="#60a5fa" font-size="8">Single Retrofit + OkHttp instance</text>
+  <text x="680" y="364" text-anchor="middle" fill="#60a5fa" font-size="8">Dynamic URL overrides base URL</text>
+  <text x="680" y="376" text-anchor="middle" fill="#60a5fa" font-size="8">No extra instances needed</text>
+  <text x="680" y="395" text-anchor="middle" fill="#fcd34d" font-size="8">Use when: one server is rarely</text>
+  <text x="680" y="408" text-anchor="middle" fill="#fcd34d" font-size="8">hit (99% on Server 1)</text>
+
+  <!-- ══ BOTTOM: Decision guide + Failover ══ -->
+  <rect x="20" y="446" width="400" height="118" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="220" y="466" text-anchor="middle" fill="#fcd34d" font-size="10" font-weight="700">When to Use Which</text>
+  <rect x="36" y="474" width="368" height="80" rx="4" fill="#0f172a"/>
+  <text x="50" y="490" fill="#86efac" font-size="8">99% req → Server1, 1% → Server2  →  Method 3 (@Url)</text>
+  <text x="50" y="504" fill="#86efac" font-size="8">50/50 random between both servers  →  Method 2 (2 OkHttp)</text>
+  <text x="50" y="518" fill="#86efac" font-size="8">All first 10 min → Server1, next 10 min → Server2  →  Method 2*</text>
+  <text x="50" y="534" fill="#64748b" font-size="8">  * theoretical — rarely happens in practice</text>
+
+  <rect x="440" y="446" width="400" height="118" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="640" y="466" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="700">Base URL Failover Strategy</text>
+  <rect x="456" y="474" width="368" height="80" rx="4" fill="#0f172a"/>
+  <text x="470" y="490" fill="#94a3b8" font-size="8">If a base URL goes down and you need to switch:</text>
+  <text x="470" y="504" fill="#94a3b8" font-size="8">1. Set the current Retrofit instance to null</text>
+  <text x="470" y="518" fill="#94a3b8" font-size="8">2. Recreate Retrofit with the new base URL</text>
+  <text x="470" y="532" fill="#fca5a5" font-size="8">There is no hot-swap — recreation is the correct approach</text>
+  <text x="470" y="546" fill="#64748b" font-size="8">Pool config: ConnectionPool(5, 5, TimeUnit.MINUTES)</text>
+</svg>
