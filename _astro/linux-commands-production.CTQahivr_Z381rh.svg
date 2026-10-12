@@ -1,0 +1,197 @@
+<svg viewBox="0 0 900 720" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="900" height="720" fill="#0f172a" rx="12"/>
+  <text x="450" y="30" text-anchor="middle" fill="#f1f5f9" font-size="16" font-weight="700">Essential Linux Commands for Production</text>
+
+  <!-- ══ Group 1: Navigate ══ -->
+  <rect x="20" y="44" width="420" height="148" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="230" y="62" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">① Navigate the Filesystem</text>
+
+  <rect x="36" y="68" width="50" height="16" rx="3" fill="#1e3a5f"/>
+  <text x="61" y="80" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">ls</text>
+  <text x="95" y="80" fill="#94a3b8" font-size="8">List files  (-la = long format + hidden files)</text>
+
+  <rect x="36" y="90" width="50" height="16" rx="3" fill="#1e3a5f"/>
+  <text x="61" y="102" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">cd</text>
+  <text x="95" y="102" fill="#94a3b8" font-size="8">Change directory  (cd .. = parent, cd ~ = home)</text>
+
+  <rect x="36" y="112" width="50" height="16" rx="3" fill="#1e3a5f"/>
+  <text x="61" y="124" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">pwd</text>
+  <text x="95" y="124" fill="#94a3b8" font-size="8">Print full path of current directory</text>
+
+  <rect x="36" y="134" width="60" height="16" rx="3" fill="#1e3a5f"/>
+  <text x="66" y="146" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">mkdir</text>
+  <text x="105" y="146" fill="#94a3b8" font-size="8">Create directory  (-p = create parent dirs too)</text>
+
+  <rect x="36" y="156" width="50" height="16" rx="3" fill="#1e3a5f"/>
+  <text x="61" y="168" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">find</text>
+  <text x="95" y="168" fill="#94a3b8" font-size="8">Search files by name, type, size, date</text>
+
+  <!-- ══ Group 2: Files ══ -->
+  <rect x="460" y="44" width="420" height="148" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="670" y="62" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">② File Operations</text>
+
+  <rect x="476" y="68" width="55" height="16" rx="3" fill="#14532d"/>
+  <text x="503" y="80" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">touch</text>
+  <text x="540" y="80" fill="#94a3b8" font-size="8">Create empty file or update timestamp</text>
+
+  <rect x="476" y="90" width="50" height="16" rx="3" fill="#14532d"/>
+  <text x="501" y="102" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">cp</text>
+  <text x="535" y="102" fill="#94a3b8" font-size="8">Copy files/dirs  (-r = recursive for dirs)</text>
+
+  <rect x="476" y="112" width="50" height="16" rx="3" fill="#14532d"/>
+  <text x="501" y="124" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">mv</text>
+  <text x="535" y="124" fill="#94a3b8" font-size="8">Move or rename files and directories</text>
+
+  <rect x="476" y="134" width="50" height="16" rx="3" fill="#14532d"/>
+  <text x="501" y="146" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">rm</text>
+  <text x="535" y="146" fill="#94a3b8" font-size="8">Delete files  (-rf = recursive + force — dangerous!)</text>
+
+  <rect x="476" y="156" width="50" height="16" rx="3" fill="#14532d"/>
+  <text x="501" y="168" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">cat</text>
+  <text x="535" y="168" fill="#94a3b8" font-size="8">Print file contents to terminal</text>
+
+  <!-- ══ Group 3: Read & Search ══ -->
+  <rect x="20" y="204" width="420" height="126" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="230" y="222" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="700">③ Read &amp; Search</text>
+
+  <rect x="36" y="228" width="55" height="16" rx="3" fill="#2d1f3a"/>
+  <text x="63" y="240" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">less</text>
+  <text x="100" y="240" fill="#94a3b8" font-size="8">Scroll large files (q=quit, /=search, G=end)</text>
+
+  <rect x="36" y="250" width="55" height="16" rx="3" fill="#2d1f3a"/>
+  <text x="63" y="262" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">grep</text>
+  <text x="100" y="262" fill="#94a3b8" font-size="8">Search text patterns  (-r recursive, -i case-insensitive)</text>
+
+  <rect x="36" y="272" width="55" height="16" rx="3" fill="#2d1f3a"/>
+  <text x="63" y="284" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">head</text>
+  <text x="100" y="284" fill="#94a3b8" font-size="8">Show first N lines of file (default 10)</text>
+
+  <rect x="36" y="294" width="55" height="16" rx="3" fill="#2d1f3a"/>
+  <text x="63" y="306" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">tail</text>
+  <text x="100" y="306" fill="#94a3b8" font-size="8">Show last N lines  (-f = follow live log)</text>
+
+  <rect x="36" y="316" width="55" height="16" rx="3" fill="#2d1f3a"/>
+  <text x="63" y="328" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">wc</text>
+  <text x="100" y="328" fill="#94a3b8" font-size="8">Count lines/words/bytes (-l = lines only)</text>
+
+  <!-- ══ Group 4: Permissions ══ -->
+  <rect x="460" y="204" width="420" height="126" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="670" y="222" text-anchor="middle" fill="#fcd34d" font-size="10" font-weight="700">④ Permissions &amp; Ownership</text>
+
+  <rect x="476" y="228" width="60" height="16" rx="3" fill="#2d1a00"/>
+  <text x="506" y="240" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">chmod</text>
+  <text x="545" y="240" fill="#94a3b8" font-size="8">Change file permissions (755, 644, +x)</text>
+
+  <rect x="476" y="250" width="60" height="16" rx="3" fill="#2d1a00"/>
+  <text x="506" y="262" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">chown</text>
+  <text x="545" y="262" fill="#94a3b8" font-size="8">Change file owner/group (user:group)</text>
+
+  <rect x="476" y="272" width="60" height="16" rx="3" fill="#2d1a00"/>
+  <text x="506" y="284" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">sudo</text>
+  <text x="545" y="284" fill="#94a3b8" font-size="8">Run a command as superuser (root)</text>
+
+  <rect x="476" y="294" width="60" height="16" rx="3" fill="#2d1a00"/>
+  <text x="506" y="306" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">whoami</text>
+  <text x="545" y="306" fill="#94a3b8" font-size="8">Print current logged-in username</text>
+
+  <rect x="476" y="316" width="60" height="16" rx="3" fill="#2d1a00"/>
+  <text x="506" y="328" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">groups</text>
+  <text x="545" y="328" fill="#94a3b8" font-size="8">Show which groups the current user belongs to</text>
+
+  <!-- ══ Group 5: Processes ══ -->
+  <rect x="20" y="342" width="420" height="126" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="230" y="362" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="700">⑤ Processes</text>
+
+  <rect x="36" y="368" width="50" height="16" rx="3" fill="#450a0a"/>
+  <text x="61" y="380" text-anchor="middle" fill="#fca5a5" font-size="8" font-weight="700">ps</text>
+  <text x="95" y="380" fill="#94a3b8" font-size="8">List processes  (ps aux = all processes)</text>
+
+  <rect x="36" y="390" width="50" height="16" rx="3" fill="#450a0a"/>
+  <text x="61" y="402" text-anchor="middle" fill="#fca5a5" font-size="8" font-weight="700">top</text>
+  <text x="95" y="402" fill="#94a3b8" font-size="8">Live process monitor (CPU/RAM). q=quit</text>
+
+  <rect x="36" y="412" width="55" height="16" rx="3" fill="#450a0a"/>
+  <text x="63" y="424" text-anchor="middle" fill="#fca5a5" font-size="8" font-weight="700">htop</text>
+  <text x="100" y="424" fill="#94a3b8" font-size="8">Better top — coloured, interactive (install separately)</text>
+
+  <rect x="36" y="434" width="50" height="16" rx="3" fill="#450a0a"/>
+  <text x="61" y="446" text-anchor="middle" fill="#fca5a5" font-size="8" font-weight="700">kill</text>
+  <text x="95" y="446" fill="#94a3b8" font-size="8">Send signal to PID  (-9 = force kill)</text>
+
+  <rect x="36" y="456" width="70" height="16" rx="3" fill="#450a0a"/>
+  <text x="71" y="468" text-anchor="middle" fill="#fca5a5" font-size="8" font-weight="700">killall</text>
+  <text x="115" y="468" fill="#94a3b8" font-size="8">Kill all processes with a given name</text>
+
+  <!-- ══ Group 6: Disk & Network ══ -->
+  <rect x="460" y="342" width="420" height="126" rx="8" fill="#1e293b" stroke="#0ea5e9" stroke-width="1.5"/>
+  <text x="670" y="362" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="700">⑥ Disk &amp; Network</text>
+
+  <rect x="476" y="368" width="50" height="16" rx="3" fill="#0c2a3d"/>
+  <text x="501" y="380" text-anchor="middle" fill="#38bdf8" font-size="8" font-weight="700">df</text>
+  <text x="535" y="380" fill="#94a3b8" font-size="8">Disk space of mounted filesystems  (-h = human)</text>
+
+  <rect x="476" y="390" width="50" height="16" rx="3" fill="#0c2a3d"/>
+  <text x="501" y="402" text-anchor="middle" fill="#38bdf8" font-size="8" font-weight="700">du</text>
+  <text x="535" y="402" fill="#94a3b8" font-size="8">Disk usage of a directory  (-sh = summary)</text>
+
+  <rect x="476" y="412" width="50" height="16" rx="3" fill="#0c2a3d"/>
+  <text x="501" y="424" text-anchor="middle" fill="#38bdf8" font-size="8" font-weight="700">curl</text>
+  <text x="535" y="424" fill="#94a3b8" font-size="8">Transfer data to/from URL (test APIs, download files)</text>
+
+  <rect x="476" y="434" width="55" height="16" rx="3" fill="#0c2a3d"/>
+  <text x="503" y="446" text-anchor="middle" fill="#38bdf8" font-size="8" font-weight="700">wget</text>
+  <text x="540" y="446" fill="#94a3b8" font-size="8">Download files from the internet</text>
+
+  <rect x="476" y="456" width="55" height="16" rx="3" fill="#0c2a3d"/>
+  <text x="503" y="468" text-anchor="middle" fill="#38bdf8" font-size="8" font-weight="700">ping</text>
+  <text x="540" y="468" fill="#94a3b8" font-size="8">Check if host is reachable + measure latency</text>
+
+  <!-- ══ PERMISSIONS VISUAL ══ -->
+  <rect x="20" y="480" width="860" height="100" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+  <text x="450" y="500" text-anchor="middle" fill="#fcd34d" font-size="10" font-weight="700">chmod Permission Breakdown</text>
+
+  <rect x="36" y="508" width="820" height="62" rx="4" fill="#0f172a"/>
+  <!-- octal -->
+  <text x="50" y="524" fill="#64748b" font-size="8" font-weight="600">Octal notation:</text>
+  <rect x="160" y="512" width="36" height="20" rx="3" fill="#1e3a5f"/>
+  <text x="178" y="526" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">7</text>
+  <rect x="202" y="512" width="36" height="20" rx="3" fill="#14532d"/>
+  <text x="220" y="526" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">5</text>
+  <rect x="244" y="512" width="36" height="20" rx="3" fill="#2d1a00"/>
+  <text x="262" y="526" text-anchor="middle" fill="#fcd34d" font-size="10" font-weight="700">5</text>
+  <text x="178" y="541" text-anchor="middle" fill="#60a5fa" font-size="7">Owner</text>
+  <text x="220" y="541" text-anchor="middle" fill="#86efac" font-size="7">Group</text>
+  <text x="262" y="541" text-anchor="middle" fill="#fcd34d" font-size="7">Others</text>
+
+  <text x="310" y="524" fill="#94a3b8" font-size="8">7 = rwx (read+write+exec)   6 = rw-   5 = r-x   4 = r--</text>
+  <text x="310" y="540" fill="#94a3b8" font-size="8">chmod 755 file.sh  →  owner full, group+others read+exec</text>
+  <text x="310" y="554" fill="#94a3b8" font-size="8">chmod 644 file.txt →  owner read+write, group+others read only</text>
+  <text x="550" y="524" fill="#86efac" font-size="8">chmod +x script.sh       # add execute for everyone</text>
+  <text x="550" y="540" fill="#86efac" font-size="8">chmod u+x,g-w script.sh  # symbolic notation</text>
+  <text x="550" y="554" fill="#86efac" font-size="8">chmod -R 755 /var/www     # recursive on directory</text>
+
+  <!-- ══ PRODUCTION TIPS ══ -->
+  <rect x="20" y="592" width="860" height="116" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1"/>
+  <text x="450" y="612" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">Production Quick Reference</text>
+
+  <rect x="36" y="620" width="270" height="78" rx="4" fill="#0f172a"/>
+  <text x="171" y="636" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="600">Log Monitoring</text>
+  <text x="50" y="651" fill="#94a3b8" font-size="8">tail -f /var/log/app.log</text>
+  <text x="50" y="664" fill="#94a3b8" font-size="8">tail -f app.log | grep ERROR</text>
+  <text x="50" y="677" fill="#94a3b8" font-size="8">grep -r "NullPointer" /var/log/</text>
+  <text x="50" y="690" fill="#64748b" font-size="8">-f follows file as it grows (live tail)</text>
+
+  <rect x="316" y="620" width="270" height="78" rx="4" fill="#0f172a"/>
+  <text x="451" y="636" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="600">Find &amp; Disk Usage</text>
+  <text x="330" y="651" fill="#94a3b8" font-size="8">find /var/log -name "*.log" -mtime +7</text>
+  <text x="330" y="664" fill="#94a3b8" font-size="8">find . -size +100M</text>
+  <text x="330" y="677" fill="#94a3b8" font-size="8">du -sh /var/log/*  | sort -h</text>
+  <text x="330" y="690" fill="#64748b" font-size="8">-mtime +7 = modified more than 7 days ago</text>
+
+  <rect x="596" y="620" width="268" height="78" rx="4" fill="#0f172a"/>
+  <text x="730" y="636" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="600">Process Rescue</text>
+  <text x="610" y="651" fill="#94a3b8" font-size="8">ps aux | grep myapp</text>
+  <text x="610" y="664" fill="#94a3b8" font-size="8">kill -9 &lt;PID&gt;</text>
+  <text x="610" y="677" fill="#94a3b8" font-size="8">kill -15 &lt;PID&gt;   # graceful shutdown</text>
+  <text x="610" y="690" fill="#64748b" font-size="8">-15 (SIGTERM) first, -9 (SIGKILL) as last resort</text>
+</svg>

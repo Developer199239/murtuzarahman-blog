@@ -1,0 +1,108 @@
+<svg viewBox="0 0 860 520" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="520" fill="#0f172a" rx="12"/>
+  <text x="430" y="30" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">OkHttp vs Retrofit — How Android Networking Works Internally</text>
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+    <marker id="ab" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+
+  <!-- ══ LEFT: Layer Stack ══ -->
+  <rect x="20" y="44" width="390" height="312" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="215" y="64" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">Android Networking Layer Stack</text>
+
+  <!-- App layer -->
+  <rect x="36" y="72" width="358" height="44" rx="6" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="215" y="90" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">Your App Code</text>
+  <text x="215" y="108" text-anchor="middle" fill="#94a3b8" font-size="8">apiService.getUsers()  — one function call</text>
+
+  <line x1="215" y1="116" x2="215" y2="130" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- Retrofit layer -->
+  <rect x="36" y="130" width="358" height="60" rx="6" fill="#2d1f3a" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="215" y="150" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">Retrofit (Wrapper)</text>
+  <text x="215" y="165" text-anchor="middle" fill="#94a3b8" font-size="8">Adapter pattern • Threading (coroutines, Flow, thread pool)</text>
+  <text x="215" y="180" text-anchor="middle" fill="#94a3b8" font-size="8">Auto JSON parsing (Gson / Moshi) • Generates HTTP request code</text>
+
+  <line x1="215" y1="190" x2="215" y2="204" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- OkHttp layer -->
+  <rect x="36" y="204" width="358" height="60" rx="6" fill="#14532d" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="215" y="224" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">OkHttp (HTTP Engine)</text>
+  <text x="215" y="239" text-anchor="middle" fill="#94a3b8" font-size="8">Makes the actual network call • DNS • TLS handshake</text>
+  <text x="215" y="254" text-anchor="middle" fill="#94a3b8" font-size="8">Connection pooling • Interceptors • Timeouts</text>
+
+  <line x1="215" y1="264" x2="215" y2="278" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- Server -->
+  <rect x="36" y="278" width="358" height="36" rx="6" fill="#450a0a" stroke="#ef4444" stroke-width="1"/>
+  <text x="215" y="301" text-anchor="middle" fill="#fca5a5" font-size="10">Remote Server (REST API)</text>
+
+  <!-- History note -->
+  <rect x="36" y="322" width="358" height="26" rx="4" fill="#0f172a"/>
+  <text x="215" y="339" text-anchor="middle" fill="#64748b" font-size="8">After Android 4.4: even HttpUrlConnection uses OkHttp internally</text>
+
+  <!-- ══ RIGHT TOP: History ══ -->
+  <rect x="450" y="44" width="390" height="120" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="645" y="64" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">HTTP Engine History</text>
+
+  <rect x="466" y="72" width="358" height="82" rx="4" fill="#0f172a"/>
+  <text x="480" y="88" fill="#94a3b8" font-size="8" font-weight="600">1. HttpUrlConnection (Apache) — pre-Android 4.4</text>
+  <text x="480" y="101" fill="#64748b" font-size="8">    Manual connection code, verbose, used by Volley internally</text>
+  <text x="480" y="116" fill="#94a3b8" font-size="8" font-weight="600">2. OkHttp (Square) — Android 4.4+</text>
+  <text x="480" y="129" fill="#64748b" font-size="8">    Modern engine — connection pooling, TLS, interceptors</text>
+  <text x="480" y="144" fill="#fcd34d" font-size="8">    HttpUrlConnection now delegates to OkHttp internally</text>
+
+  <!-- ══ RIGHT MIDDLE: Retrofit Details ══ -->
+  <rect x="450" y="176" width="390" height="120" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="645" y="196" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">What Retrofit Adds Over OkHttp</text>
+
+  <rect x="466" y="204" width="358" height="82" rx="4" fill="#0f172a"/>
+  <text x="480" y="219" fill="#86efac" font-size="8">✅ Adapter pattern — plugs into coroutines, Flow, RxJava, thread pool</text>
+  <text x="480" y="233" fill="#86efac" font-size="8">✅ Auto-parsing — Gson / Moshi converter deserializes JSON for you</text>
+  <text x="480" y="247" fill="#86efac" font-size="8">✅ Eliminates boilerplate — no manual request/response handling</text>
+  <text x="480" y="261" fill="#86efac" font-size="8">✅ Interface-based API definition — type-safe, readable</text>
+  <text x="480" y="276" fill="#64748b" font-size="8">Without Retrofit: ~50 lines to make one call. With Retrofit: 2–3 lines.</text>
+
+  <!-- ══ RIGHT BOTTOM: Gson vs Moshi ══ -->
+  <rect x="450" y="308" width="390" height="134" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="645" y="328" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">Gson vs Moshi — Why Moshi Is Faster</text>
+
+  <rect x="466" y="336" width="184" height="96" rx="4" fill="#0f172a"/>
+  <text x="558" y="352" text-anchor="middle" fill="#f87171" font-size="9" font-weight="700">Gson</text>
+  <text x="480" y="368" fill="#94a3b8" font-size="8">Uses reflection at runtime</text>
+  <text x="480" y="381" fill="#94a3b8" font-size="8">Scans class fields dynamically</text>
+  <text x="480" y="394" fill="#94a3b8" font-size="8">Slower — more overhead</text>
+  <text x="480" y="407" fill="#94a3b8" font-size="8">Works without annotation setup</text>
+  <text x="480" y="420" fill="#f87171" font-size="8">Older, common in legacy code</text>
+
+  <rect x="658" y="336" width="176" height="96" rx="4" fill="#0f172a"/>
+  <text x="746" y="352" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">Moshi</text>
+  <text x="668" y="368" fill="#94a3b8" font-size="8">No reflection — uses codegen</text>
+  <text x="668" y="381" fill="#94a3b8" font-size="8">Generates adapters at compile</text>
+  <text x="668" y="394" fill="#94a3b8" font-size="8">Faster — zero reflection cost</text>
+  <text x="668" y="407" fill="#94a3b8" font-size="8">Requires @JsonClass annotation</text>
+  <text x="668" y="420" fill="#86efac" font-size="8">Preferred for new Kotlin code</text>
+
+  <!-- ══ BOTTOM: key insight ══ -->
+  <rect x="20" y="368" width="390" height="46" rx="8" fill="#1e293b" stroke="#60a5fa" stroke-width="1"/>
+  <text x="215" y="388" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="700">Retrofit = Volley analogy</text>
+  <text x="215" y="402" text-anchor="middle" fill="#94a3b8" font-size="8">Volley wrapped HttpUrlConnection to add threading + parsing</text>
+  <text x="215" y="412" text-anchor="middle" fill="#94a3b8" font-size="8">Retrofit wraps OkHttp to add adapter pattern + threading + parsing</text>
+
+  <!-- ══ BOTTOM FULL: Retrofit code example ══ -->
+  <rect x="20" y="424" width="820" height="80" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <text x="430" y="444" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700">Retrofit API Definition (2–3 lines replaces ~50 lines of OkHttp boilerplate)</text>
+  <rect x="36" y="452" width="390" height="44" rx="4" fill="#0f172a"/>
+  <text x="50" y="467" fill="#94a3b8" font-size="8">interface ApiService {</text>
+  <text x="50" y="480" fill="#94a3b8" font-size="8">    @GET("users")  suspend fun getUsers(): Response&lt;List&lt;User&gt;&gt;</text>
+  <text x="50" y="491" fill="#64748b" font-size="8">}  // Retrofit generates all the HTTP code behind this interface</text>
+  <rect x="446" y="452" width="390" height="44" rx="4" fill="#0f172a"/>
+  <text x="460" y="467" fill="#94a3b8" font-size="8">val retrofit = Retrofit.Builder()</text>
+  <text x="460" y="480" fill="#94a3b8" font-size="8">    .baseUrl("https://api.example.com/").addConverterFactory(MoshiConverterFactory.create())</text>
+  <text x="460" y="491" fill="#64748b" font-size="8">    .build().create(ApiService::class.java)</text>
+</svg>

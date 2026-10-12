@@ -1,0 +1,99 @@
+<svg viewBox="0 0 860 560" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="560" fill="#0f172a" rx="12"/>
+  <text x="430" y="32" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">ViewModel Internals — The Two Problems and Their Solutions</text>
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+    <marker id="ag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/>
+    </marker>
+  </defs>
+
+  <!-- ══ LEFT: Problem 1 + Fix 1 ══ -->
+  <rect x="20" y="48" width="390" height="240" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+  <text x="215" y="68" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">Problem 1 — Data Lost on Rotation</text>
+
+  <rect x="36" y="76" width="358" height="40" rx="4" fill="#1e3a5f"/>
+  <text x="215" y="91" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="600">Activity (counter = 5)</text>
+  <text x="215" y="108" text-anchor="middle" fill="#94a3b8" font-size="9">User clicks 5 times → counter = 5 shown in UI</text>
+
+  <text x="215" y="130" text-anchor="middle" fill="#f59e0b" font-size="10">↻ ORIENTATION CHANGE</text>
+
+  <rect x="36" y="136" width="358" height="40" rx="4" fill="#450a0a"/>
+  <text x="215" y="151" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="600">Activity RECREATED → onCreate() called again</text>
+  <text x="215" y="168" text-anchor="middle" fill="#f87171" font-size="9">viewModel = MainViewModel() → new instance → counter = 0 ✗</text>
+
+  <rect x="36" y="184" width="358" height="56" rx="4" fill="#14532d"/>
+  <text x="215" y="199" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">Fix: Store ViewModel in Application class</text>
+  <text x="215" y="214" text-anchor="middle" fill="#94a3b8" font-size="9">Application lifecycle &gt; Activity lifecycle</text>
+  <text x="215" y="228" text-anchor="middle" fill="#94a3b8" font-size="9">HashMap&lt;String, ViewModel&gt; → same instance returned on rotation</text>
+  <text x="215" y="242" text-anchor="middle" fill="#86efac" font-size="9">counter = 5 ✅ — data survives config change</text>
+
+  <rect x="36" y="248" width="358" height="30" rx="4" fill="#1e3a5f"/>
+  <text x="215" y="260" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="600">app.getViewModel("MainActivity") — reuses same VM from map</text>
+  <text x="215" y="272" text-anchor="middle" fill="#64748b" font-size="8">map[key] != null → return existing   |   map[key] == null → create + store</text>
+
+  <!-- ══ RIGHT: Problem 2 + Fix 2 ══ -->
+  <rect x="450" y="48" width="390" height="240" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <text x="645" y="68" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">Problem 2 — Data Survives Permanent Destroy</text>
+
+  <rect x="466" y="76" width="358" height="40" rx="4" fill="#1e3a5f"/>
+  <text x="645" y="91" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="600">MainActivity (counter = 5) → Open NextActivity + finish()</text>
+  <text x="645" y="108" text-anchor="middle" fill="#94a3b8" font-size="9">MainActivity permanently destroyed — new instance opened later</text>
+
+  <rect x="466" y="122" width="358" height="40" rx="4" fill="#450a0a"/>
+  <text x="645" y="137" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="600">New MainActivity shows counter = 5 ✗</text>
+  <text x="645" y="154" text-anchor="middle" fill="#f87171" font-size="9">Application still holds the old ViewModel — was never cleared!</text>
+
+  <rect x="466" y="168" width="358" height="60" rx="4" fill="#14532d"/>
+  <text x="645" y="183" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">Fix: Clear ViewModel only on permanent destroy</text>
+  <text x="645" y="198" text-anchor="middle" fill="#86efac" font-size="9">override fun onDestroy() {</text>
+  <text x="645" y="212" text-anchor="middle" fill="#94a3b8" font-size="9">    if (!isChangingConfigurations) {  // NOT a rotation</text>
+  <text x="645" y="226" text-anchor="middle" fill="#94a3b8" font-size="9">        app.clearViewModel("MainActivity")  // remove from map ✅</text>
+
+  <rect x="466" y="234" width="358" height="44" rx="4" fill="#1e3a5f"/>
+  <text x="645" y="249" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="600">isChangingConfigurations = true → rotation → don't clear</text>
+  <text x="645" y="263" text-anchor="middle" fill="#60a5fa" font-size="8">isChangingConfigurations = false → permanent → clear map entry</text>
+  <text x="645" y="275" text-anchor="middle" fill="#86efac" font-size="8">New MainActivity opens fresh → counter = 0 ✅</text>
+
+  <!-- ══ BOTTOM: Two Rules ══ -->
+  <rect x="20" y="302" width="820" height="100" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
+  <text x="430" y="322" text-anchor="middle" fill="#c084fc" font-size="13" font-weight="700">The Two Rules Behind Every ViewModel</text>
+
+  <rect x="36" y="330" width="394" height="62" rx="4" fill="#2d1f3a"/>
+  <text x="233" y="347" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">Rule 1</text>
+  <text x="233" y="363" text-anchor="middle" fill="#f1f5f9" font-size="10">Store ViewModel in a class whose lifecycle</text>
+  <text x="233" y="378" text-anchor="middle" fill="#f1f5f9" font-size="10">is LONGER than the Activity</text>
+  <text x="233" y="388" text-anchor="middle" fill="#94a3b8" font-size="8">→ data survives configuration changes</text>
+
+  <rect x="446" y="330" width="394" height="62" rx="4" fill="#2d1f3a"/>
+  <text x="643" y="347" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">Rule 2</text>
+  <text x="643" y="363" text-anchor="middle" fill="#f1f5f9" font-size="10">Destroy ViewModel ONLY when the Activity</text>
+  <text x="643" y="378" text-anchor="middle" fill="#f1f5f9" font-size="10">is permanently destroyed (no config change)</text>
+  <text x="643" y="388" text-anchor="middle" fill="#94a3b8" font-size="8">→ fresh state when Activity genuinely recreated by user</text>
+
+  <!-- ══ BOTTOM: Lifecycle comparison ══ -->
+  <rect x="20" y="416" width="820" height="128" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="430" y="436" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">Lifecycle Length Comparison</text>
+
+  <!-- timeline bars -->
+  <text x="100" y="460" text-anchor="middle" fill="#94a3b8" font-size="9">ActivityThread</text>
+  <rect x="170" y="450" width="640" height="14" rx="3" fill="#1d4ed8"/>
+  <text x="820" y="461" fill="#60a5fa" font-size="8">  ∞</text>
+
+  <text x="100" y="480" text-anchor="middle" fill="#94a3b8" font-size="9">Application</text>
+  <rect x="170" y="470" width="600" height="14" rx="3" fill="#7c3aed"/>
+
+  <text x="100" y="500" text-anchor="middle" fill="#94a3b8" font-size="9">Activity #1</text>
+  <rect x="170" y="490" width="280" height="14" rx="3" fill="#0f766e"/>
+
+  <text x="100" y="520" text-anchor="middle" fill="#94a3b8" font-size="9">Activity #2</text>
+  <rect x="460" y="510" width="280" height="14" rx="3" fill="#0f766e"/>
+
+  <text x="430" y="538" text-anchor="middle" fill="#64748b" font-size="8">ActivityThread &gt; Application &gt; Activity — Android ViewModel uses this hierarchy (via ViewModelStore + NonConfigurationInstance)</text>
+</svg>

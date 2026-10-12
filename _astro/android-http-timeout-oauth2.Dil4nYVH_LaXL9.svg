@@ -1,0 +1,107 @@
+<svg viewBox="0 0 860 560" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="560" fill="#0f172a" rx="12"/>
+  <text x="430" y="30" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">Read/Write Timeouts and OAuth 2.0</text>
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+    <marker id="ag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/>
+    </marker>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <!-- ══ TOP LEFT: Read Timeout ══ -->
+  <rect x="20" y="44" width="410" height="214" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="225" y="64" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">Read Timeout — Timer Per Chunk, Not Per Response</text>
+
+  <rect x="36" y="72" width="378" height="50" rx="4" fill="#450a0a"/>
+  <text x="225" y="88" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="600">Common misconception</text>
+  <text x="50" y="103" fill="#f87171" font-size="8">"Read timeout = total time allowed for the full response"  ✗</text>
+  <text x="50" y="114" fill="#64748b" font-size="8">This is wrong. The timer does NOT measure total response duration.</text>
+
+  <rect x="36" y="130" width="378" height="118" rx="4" fill="#0f172a"/>
+  <text x="225" y="146" text-anchor="middle" fill="#86efac" font-size="9" font-weight="600">What actually happens (chunks of 2 bytes)</text>
+  <!-- Chunk diagram -->
+  <text x="50" y="162" fill="#64748b" font-size="8">File: [00][01][02][03]…[511]  (1024 bytes, 2 bytes read at a time)</text>
+
+  <rect x="50" y="168" width="40" height="14" rx="2" fill="#3b82f6"/>
+  <text x="70" y="179" text-anchor="middle" fill="#fff" font-size="6">chunk1</text>
+  <text x="100" y="179" fill="#64748b" font-size="7">→ client visits server → timer starts (t=0) → server must deliver chunk within 10s</text>
+
+  <rect x="50" y="188" width="40" height="14" rx="2" fill="#3b82f6"/>
+  <text x="70" y="199" text-anchor="middle" fill="#fff" font-size="6">chunk2</text>
+  <text x="100" y="199" fill="#64748b" font-size="7">→ client visits server → timer resets (t=0) → another 10s window</text>
+
+  <text x="50" y="218" fill="#fcd34d" font-size="8">Read timeout = per-chunk window: "server must hand back this chunk within N seconds"</text>
+  <text x="50" y="230" fill="#94a3b8" font-size="8">If a chunk is not received within the window → connection broken</text>
+
+  <!-- ══ TOP RIGHT: Write Timeout ══ -->
+  <rect x="450" y="44" width="390" height="214" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="645" y="64" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">Write Timeout — Opposite Direction (Upload)</text>
+
+  <rect x="466" y="72" width="358" height="60" rx="4" fill="#2d1f3a"/>
+  <text x="645" y="88" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="600">Upload: client sends chunks to server</text>
+  <text x="480" y="104" fill="#94a3b8" font-size="8">Client → [chunk1] → Server   timer starts on server</text>
+  <text x="480" y="118" fill="#94a3b8" font-size="8">Server expects next chunk within write timeout window</text>
+  <text x="480" y="130" fill="#94a3b8" font-size="8">Client → [chunk2] → Server   timer resets</text>
+
+  <rect x="466" y="140" width="358" height="110" rx="4" fill="#0f172a"/>
+  <text x="645" y="156" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="600">OkHttp configuration</text>
+  <text x="480" y="172" fill="#94a3b8" font-size="9">OkHttpClient.Builder()</text>
+  <text x="480" y="187" fill="#94a3b8" font-size="9">    .readTimeout(30, TimeUnit.SECONDS)</text>
+  <text x="480" y="202" fill="#94a3b8" font-size="9">    .writeTimeout(30, TimeUnit.SECONDS)</text>
+  <text x="480" y="217" fill="#94a3b8" font-size="9">    .connectTimeout(10, TimeUnit.SECONDS)</text>
+  <text x="480" y="232" fill="#64748b" font-size="8">    .build()</text>
+  <text x="480" y="243" fill="#64748b" font-size="8">connectTimeout = Step 1 (DNS+TLS).  read/write = per-chunk.</text>
+
+  <!-- ══ BOTTOM: OAuth 2.0 ══ -->
+  <rect x="20" y="270" width="820" height="274" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="430" y="290" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">OAuth 2.0 — Two-Step Authentication and Authorization Protocol</text>
+
+  <!-- Without OAuth -->
+  <rect x="36" y="298" width="378" height="90" rx="4" fill="#450a0a"/>
+  <text x="225" y="314" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="700">❌ Without OAuth — Credentials on Every Request</text>
+  <text x="50" y="330" fill="#94a3b8" font-size="8">GET /profile  Authorization: email=user@x.com&amp;password=secret</text>
+  <text x="50" y="344" fill="#94a3b8" font-size="8">GET /orders   Authorization: email=user@x.com&amp;password=secret</text>
+  <text x="50" y="358" fill="#94a3b8" font-size="8">POST /checkout Authorization: email=user@x.com&amp;password=secret</text>
+  <text x="50" y="374" fill="#f87171" font-size="8">Every request carries credentials → exposed in logs, interception risk, wasteful</text>
+
+  <!-- With OAuth -->
+  <rect x="444" y="298" width="378" height="90" rx="4" fill="#14532d"/>
+  <text x="633" y="314" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">✅ With OAuth 2.0 — Token After First Auth</text>
+  <text x="458" y="330" fill="#94a3b8" font-size="8">POST /auth  { email, password }  →  token: "eyJhbGc..."</text>
+  <text x="458" y="344" fill="#94a3b8" font-size="8">GET /profile  Authorization: Bearer eyJhbGc...</text>
+  <text x="458" y="358" fill="#94a3b8" font-size="8">GET /orders   Authorization: Bearer eyJhbGc...</text>
+  <text x="458" y="374" fill="#86efac" font-size="8">Credentials sent once. Token used for all subsequent calls. ✅</text>
+
+  <!-- Two-step flow -->
+  <rect x="36" y="398" width="788" height="134" rx="4" fill="#0f172a"/>
+  <text x="430" y="414" text-anchor="middle" fill="#fcd34d" font-size="10" font-weight="700">OAuth 2.0 Two-Step Flow</text>
+
+  <!-- Step 1 box -->
+  <rect x="50" y="420" width="340" height="104" rx="4" fill="#1e3a5f"/>
+  <text x="220" y="438" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">Step 1 — Authentication</text>
+  <text x="220" y="452" text-anchor="middle" fill="#94a3b8" font-size="8">"Who are you?"</text>
+  <text x="64" y="467" fill="#94a3b8" font-size="8">User provides credentials (email + password)</text>
+  <text x="64" y="480" fill="#94a3b8" font-size="8">Server verifies identity</text>
+  <text x="64" y="493" fill="#86efac" font-size="8">Server issues access token (short-lived)</text>
+  <text x="64" y="506" fill="#86efac" font-size="8">Server issues refresh token (long-lived)</text>
+  <text x="64" y="519" fill="#64748b" font-size="8">Only happens once (or when token expires)</text>
+
+  <!-- Arrow -->
+  <line x1="390" y1="472" x2="408" y2="472" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- Step 2 box -->
+  <rect x="410" y="420" width="400" height="104" rx="4" fill="#14532d"/>
+  <text x="610" y="438" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">Step 2 — Authorization</text>
+  <text x="610" y="452" text-anchor="middle" fill="#94a3b8" font-size="8">"What are you allowed to do?"</text>
+  <text x="424" y="467" fill="#94a3b8" font-size="8">All subsequent requests carry the access token</text>
+  <text x="424" y="480" fill="#94a3b8" font-size="8">Server validates token, not credentials</text>
+  <text x="424" y="493" fill="#86efac" font-size="8">Token expired → use refresh token to get new one</text>
+  <text x="424" y="506" fill="#86efac" font-size="8">Refresh expired → re-authenticate (Step 1 again)</text>
+  <text x="424" y="519" fill="#64748b" font-size="8">No password on the wire after Step 1</text>
+</svg>

@@ -1,0 +1,109 @@
+<svg viewBox="0 0 860 540" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="540" fill="#0f172a" rx="12"/>
+  <text x="430" y="30" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">Lambdas, Higher-Order Functions, and Typealias in Kotlin</text>
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- ══ TOP LEFT: Lambda ══ -->
+  <rect x="20" y="44" width="390" height="160" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="215" y="64" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">Lambda = Anonymous Function (it IS a function)</text>
+
+  <rect x="36" y="72" width="358" height="60" rx="4" fill="#0f172a"/>
+  <text x="50" y="88" fill="#64748b" font-size="8" font-weight="600">Named function</text>
+  <text x="50" y="103" fill="#94a3b8" font-size="9">fun square(value: Int): Int { return value * value }</text>
+  <text x="50" y="118" fill="#94a3b8" font-size="9">square(3)  // returns 9</text>
+  <text x="50" y="130" fill="#64748b" font-size="8">Equivalent lambda (anonymous — no name)</text>
+
+  <rect x="36" y="136" width="358" height="36" rx="4" fill="#2d1f3a"/>
+  <text x="50" y="152" fill="#94a3b8" font-size="9">val square: (Int) -&gt; Int = { value -&gt; value * value }</text>
+  <text x="50" y="165" fill="#86efac" font-size="8">square(3)  // returns 9 — same result, no function name needed</text>
+
+  <rect x="36" y="178" width="358" height="20" rx="4" fill="#14532d"/>
+  <text x="215" y="192" text-anchor="middle" fill="#86efac" font-size="8">Lambda: no name · last expression = return value · can be passed/returned/stored</text>
+
+  <!-- ══ TOP RIGHT: HOF ══ -->
+  <rect x="450" y="44" width="390" height="160" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="645" y="64" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">Higher-Order Function (takes or returns a function)</text>
+
+  <rect x="466" y="72" width="358" height="50" rx="4" fill="#0f172a"/>
+  <text x="480" y="88" fill="#64748b" font-size="8" font-weight="600">Takes a function as parameter:</text>
+  <text x="480" y="103" fill="#94a3b8" font-size="9">fun passMeFunction(abc: () -&gt; Unit) {</text>
+  <text x="480" y="116" fill="#94a3b8" font-size="9">    abc()   // execute the function passed in</text>
+
+  <rect x="466" y="128" width="358" height="50" rx="4" fill="#0f172a"/>
+  <text x="480" y="144" fill="#64748b" font-size="8" font-weight="600">Returns a function:</text>
+  <text x="480" y="159" fill="#94a3b8" font-size="9">fun returnMeAddFunction(): ((Int, Int) -&gt; Int) {</text>
+  <text x="480" y="172" fill="#94a3b8" font-size="9">    return ::add  // returns a reference to add()</text>
+
+  <rect x="466" y="182" width="358" height="16" rx="4" fill="#1e3a5f"/>
+  <text x="645" y="194" text-anchor="middle" fill="#60a5fa" font-size="8">Takes function param OR returns function → it is a higher-order function</text>
+
+  <!-- ══ MIDDLE: Java Listener vs Kotlin HOF ══ -->
+  <rect x="20" y="216" width="820" height="168" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="430" y="236" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">Java Listener → Kotlin Higher-Order Function (same intent, different syntax)</text>
+
+  <!-- Java side -->
+  <rect x="36" y="244" width="380" height="130" rx="4" fill="#0f172a"/>
+  <text x="226" y="260" text-anchor="middle" fill="#f87171" font-size="9" font-weight="700">Java — Interface as function container</text>
+  <text x="50" y="276" fill="#94a3b8" font-size="8">interface NetworkListener {</text>
+  <text x="50" y="289" fill="#94a3b8" font-size="8">    void onSuccess(String data);</text>
+  <text x="50" y="302" fill="#94a3b8" font-size="8">    void onError(Throwable error);</text>
+  <text x="50" y="315" fill="#94a3b8" font-size="8">}</text>
+  <text x="50" y="330" fill="#94a3b8" font-size="8">makeNetworkCall(new NetworkListener() {</text>
+  <text x="50" y="343" fill="#94a3b8" font-size="8">    public void onSuccess(String data) { ... }</text>
+  <text x="50" y="356" fill="#94a3b8" font-size="8">    public void onError(Throwable e) { ... }</text>
+  <text x="50" y="366" fill="#f87171" font-size="8">});   // interface is just a box holding 2 functions</text>
+
+  <!-- arrow between -->
+  <text x="430" y="322" text-anchor="middle" fill="#fcd34d" font-size="20">→</text>
+
+  <!-- Kotlin side -->
+  <rect x="444" y="244" width="380" height="130" rx="4" fill="#0f172a"/>
+  <text x="634" y="260" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">Kotlin — Direct function parameters</text>
+  <text x="458" y="276" fill="#94a3b8" font-size="8">fun makeNetworkCall(</text>
+  <text x="458" y="289" fill="#94a3b8" font-size="8">    onSuccess: (String) -&gt; Unit,</text>
+  <text x="458" y="302" fill="#94a3b8" font-size="8">    onError: (Throwable) -&gt; Unit</text>
+  <text x="458" y="315" fill="#94a3b8" font-size="8">) { ... }</text>
+  <text x="458" y="330" fill="#94a3b8" font-size="8">makeNetworkCall(</text>
+  <text x="458" y="343" fill="#94a3b8" font-size="8">    onSuccess = { data -&gt; println(data) },</text>
+  <text x="458" y="356" fill="#94a3b8" font-size="8">    onError = { e -&gt; e.printStackTrace() }</text>
+  <text x="458" y="366" fill="#86efac" font-size="8">)  // no interface needed — functions passed directly</text>
+
+  <!-- ══ BOTTOM LEFT: Typealias ══ -->
+  <rect x="20" y="396" width="390" height="130" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="215" y="416" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">typealias — Readable Names for Complex Types</text>
+
+  <rect x="36" y="424" width="358" height="54" rx="4" fill="#0f172a"/>
+  <text x="50" y="439" fill="#64748b" font-size="8" font-weight="600">Without typealias — hard to read at a glance:</text>
+  <text x="50" y="453" fill="#94a3b8" font-size="9">var observer: ((String) -&gt; Unit)? = null</text>
+  <text x="50" y="467" fill="#64748b" font-size="8" font-weight="600">With typealias — intent is clear:</text>
+  <text x="50" y="477" fill="#86efac" font-size="9">typealias TestObserver = (String) -&gt; Unit</text>
+
+  <rect x="36" y="484" width="358" height="36" rx="4" fill="#14532d"/>
+  <text x="215" y="499" text-anchor="middle" fill="#86efac" font-size="8" font-weight="600">var observer: TestObserver? = null  // ✅ clearly a test observer</text>
+  <text x="215" y="513" text-anchor="middle" fill="#94a3b8" font-size="8">Compile time: alias replaced with original type — zero runtime cost</text>
+
+  <!-- ══ BOTTOM RIGHT: Mapping table ══ -->
+  <rect x="450" y="396" width="390" height="130" rx="8" fill="#1e293b" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="645" y="416" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">Java vs Kotlin Mapping</text>
+
+  <rect x="466" y="424" width="358" height="96" rx="4" fill="#0f172a"/>
+  <!-- header -->
+  <text x="570" y="440" text-anchor="middle" fill="#64748b" font-size="9" font-weight="700">Java</text>
+  <text x="750" y="440" text-anchor="middle" fill="#64748b" font-size="9" font-weight="700">Kotlin</text>
+  <line x1="466" y1="444" x2="824" y2="444" stroke="#1e293b" stroke-width="1"/>
+  <!-- rows -->
+  <text x="480" y="458" fill="#94a3b8" font-size="8">Interface listener</text>
+  <text x="680" y="458" fill="#86efac" font-size="8">Function parameters</text>
+  <text x="480" y="472" fill="#94a3b8" font-size="8">Interface holds methods</text>
+  <text x="680" y="472" fill="#86efac" font-size="8">Lambda holds behavior</text>
+  <text x="480" y="486" fill="#94a3b8" font-size="8">Anonymous class</text>
+  <text x="680" y="486" fill="#86efac" font-size="8">Lambda expression</text>
+  <text x="480" y="500" fill="#94a3b8" font-size="8">Callback interface</text>
+  <text x="680" y="500" fill="#86efac" font-size="8">Higher-order function</text>
+  <text x="466" y="516" fill="#fcd34d" font-size="8" font-weight="600">Java listeners = workaround for passing functions.  Kotlin passes functions directly.</text>
+</svg>

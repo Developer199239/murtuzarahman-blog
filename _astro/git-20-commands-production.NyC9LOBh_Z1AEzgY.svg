@@ -1,0 +1,201 @@
+<svg viewBox="0 0 900 740" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="900" height="740" fill="#0f172a" rx="12"/>
+  <text x="450" y="30" text-anchor="middle" fill="#f1f5f9" font-size="16" font-weight="700">20 Git Commands Every Developer Needs in Production</text>
+
+  <!-- ══ Group 1: Setup & Info ══ -->
+  <rect x="20" y="44" width="420" height="148" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="230" y="62" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">① Setup &amp; Inspection</text>
+  <!-- row -->
+  <rect x="36" y="68" width="70" height="16" rx="3" fill="#1e3a5f"/>
+  <text x="71" y="80" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">git init</text>
+  <text x="115" y="80" fill="#94a3b8" font-size="8">Create a new local repo in current directory</text>
+
+  <rect x="36" y="90" width="70" height="16" rx="3" fill="#1e3a5f"/>
+  <text x="71" y="102" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">git clone</text>
+  <text x="115" y="102" fill="#94a3b8" font-size="8">Copy remote repo to local machine</text>
+
+  <rect x="36" y="112" width="70" height="16" rx="3" fill="#1e3a5f"/>
+  <text x="71" y="124" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">git status</text>
+  <text x="115" y="124" fill="#94a3b8" font-size="8">Show staged, unstaged, untracked files</text>
+
+  <rect x="36" y="134" width="70" height="16" rx="3" fill="#1e3a5f"/>
+  <text x="71" y="146" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">git log</text>
+  <text x="115" y="146" fill="#94a3b8" font-size="8">Show commit history (use --oneline --graph)</text>
+
+  <rect x="36" y="156" width="70" height="16" rx="3" fill="#1e3a5f"/>
+  <text x="71" y="168" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">git diff</text>
+  <text x="115" y="168" fill="#94a3b8" font-size="8">Show what changed (unstaged by default)</text>
+
+  <!-- ══ Group 2: Save Work ══ -->
+  <rect x="460" y="44" width="420" height="148" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="670" y="62" text-anchor="middle" fill="#86efac" font-size="10" font-weight="700">② Save &amp; Share Work</text>
+
+  <rect x="476" y="68" width="70" height="16" rx="3" fill="#14532d"/>
+  <text x="511" y="80" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">git add</text>
+  <text x="555" y="80" fill="#94a3b8" font-size="8">Stage changes (git add . or specific file)</text>
+
+  <rect x="476" y="90" width="70" height="16" rx="3" fill="#14532d"/>
+  <text x="511" y="102" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">git commit</text>
+  <text x="555" y="102" fill="#94a3b8" font-size="8">Save snapshot with message (-m "feat: add login")</text>
+
+  <rect x="476" y="112" width="70" height="16" rx="3" fill="#14532d"/>
+  <text x="511" y="124" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">git push</text>
+  <text x="555" y="124" fill="#94a3b8" font-size="8">Upload local commits to remote branch</text>
+
+  <rect x="476" y="134" width="70" height="16" rx="3" fill="#14532d"/>
+  <text x="511" y="146" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">git pull</text>
+  <text x="555" y="146" fill="#94a3b8" font-size="8">Fetch remote + merge into current branch</text>
+
+  <rect x="476" y="156" width="70" height="16" rx="3" fill="#14532d"/>
+  <text x="511" y="168" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">git fetch</text>
+  <text x="555" y="168" fill="#94a3b8" font-size="8">Download remote changes — does NOT merge</text>
+
+  <!-- ══ Group 3: Branching ══ -->
+  <rect x="20" y="204" width="420" height="126" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="230" y="222" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="700">③ Branching</text>
+
+  <rect x="36" y="228" width="80" height="16" rx="3" fill="#2d1f3a"/>
+  <text x="76" y="240" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">git branch</text>
+  <text x="125" y="240" fill="#94a3b8" font-size="8">List all branches; -d to delete; -b to create</text>
+
+  <rect x="36" y="250" width="80" height="16" rx="3" fill="#2d1f3a"/>
+  <text x="76" y="262" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">git switch</text>
+  <text x="125" y="262" fill="#94a3b8" font-size="8">Move to another branch (modern, clear intent)</text>
+
+  <rect x="36" y="272" width="80" height="16" rx="3" fill="#2d1f3a"/>
+  <text x="76" y="284" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">git checkout</text>
+  <text x="125" y="284" fill="#94a3b8" font-size="8">Switch branch OR restore a file to last commit</text>
+
+  <rect x="36" y="294" width="80" height="16" rx="3" fill="#2d1f3a"/>
+  <text x="76" y="306" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">git merge</text>
+  <text x="125" y="306" fill="#94a3b8" font-size="8">Join another branch into current (creates merge commit)</text>
+
+  <rect x="36" y="316" width="80" height="16" rx="3" fill="#2d1f3a"/>
+  <text x="76" y="328" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">git rebase</text>
+  <text x="125" y="328" fill="#94a3b8" font-size="8">Replay commits on top of another branch (clean history)</text>
+
+  <!-- ══ Group 4: Undo & Recovery ══ -->
+  <rect x="460" y="204" width="420" height="126" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="670" y="222" text-anchor="middle" fill="#fcd34d" font-size="10" font-weight="700">④ Undo &amp; Recovery</text>
+
+  <rect x="476" y="228" width="80" height="16" rx="3" fill="#2d1a00"/>
+  <text x="516" y="240" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">git stash</text>
+  <text x="565" y="240" fill="#94a3b8" font-size="8">Temporarily shelve uncommitted work</text>
+
+  <rect x="476" y="250" width="80" height="16" rx="3" fill="#2d1a00"/>
+  <text x="516" y="262" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">git reset</text>
+  <text x="565" y="262" fill="#94a3b8" font-size="8">Move HEAD to a previous commit (local only)</text>
+
+  <rect x="476" y="272" width="80" height="16" rx="3" fill="#2d1a00"/>
+  <text x="516" y="284" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">git revert</text>
+  <text x="565" y="284" fill="#94a3b8" font-size="8">Create a NEW commit that undoes a past commit (safe for shared branches)</text>
+
+  <rect x="476" y="294" width="100" height="16" rx="3" fill="#2d1a00"/>
+  <text x="526" y="306" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">git cherry-pick</text>
+  <text x="585" y="306" fill="#94a3b8" font-size="8">Apply one specific commit onto current branch</text>
+
+  <rect x="476" y="316" width="80" height="16" rx="3" fill="#2d1a00"/>
+  <text x="516" y="328" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">git tag</text>
+  <text x="565" y="328" fill="#94a3b8" font-size="8">Mark a release point (v1.0.0, v2.3.1…)</text>
+
+  <!-- ══ WORKFLOW DIAGRAM ══ -->
+  <rect x="20" y="342" width="860" height="210" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="362" text-anchor="middle" fill="#f1f5f9" font-size="11" font-weight="700">Typical Production Git Workflow</text>
+
+  <!-- boxes -->
+  <rect x="36" y="370" width="110" height="36" rx="4" fill="#1e3a5f"/>
+  <text x="91" y="385" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">git clone / init</text>
+  <text x="91" y="398" text-anchor="middle" fill="#64748b" font-size="7">start local copy</text>
+
+  <text x="155" y="392" text-anchor="middle" fill="#475569" font-size="14">→</text>
+
+  <rect x="166" y="370" width="110" height="36" rx="4" fill="#2d1f3a"/>
+  <text x="221" y="385" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">git switch -c</text>
+  <text x="221" y="398" text-anchor="middle" fill="#64748b" font-size="7">new feature branch</text>
+
+  <text x="285" y="392" text-anchor="middle" fill="#475569" font-size="14">→</text>
+
+  <rect x="296" y="370" width="110" height="36" rx="4" fill="#14532d"/>
+  <text x="351" y="385" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">git add + commit</text>
+  <text x="351" y="398" text-anchor="middle" fill="#64748b" font-size="7">save snapshots often</text>
+
+  <text x="415" y="392" text-anchor="middle" fill="#475569" font-size="14">→</text>
+
+  <rect x="426" y="370" width="110" height="36" rx="4" fill="#1e3a5f"/>
+  <text x="481" y="385" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="700">git push -u origin</text>
+  <text x="481" y="398" text-anchor="middle" fill="#64748b" font-size="7">share with team</text>
+
+  <text x="545" y="392" text-anchor="middle" fill="#475569" font-size="14">→</text>
+
+  <rect x="556" y="370" width="110" height="36" rx="4" fill="#2d1f3a"/>
+  <text x="611" y="385" text-anchor="middle" fill="#c084fc" font-size="8" font-weight="700">PR reviewed</text>
+  <text x="611" y="398" text-anchor="middle" fill="#64748b" font-size="7">code review + approval</text>
+
+  <text x="675" y="392" text-anchor="middle" fill="#475569" font-size="14">→</text>
+
+  <rect x="686" y="370" width="110" height="36" rx="4" fill="#14532d"/>
+  <text x="741" y="385" text-anchor="middle" fill="#86efac" font-size="8" font-weight="700">git merge / rebase</text>
+  <text x="741" y="398" text-anchor="middle" fill="#64748b" font-size="7">land in main</text>
+
+  <!-- Second row -->
+  <text x="450" y="430" text-anchor="middle" fill="#64748b" font-size="8">────────────────  Rescue Scenarios  ────────────────</text>
+
+  <rect x="36" y="440" width="190" height="36" rx="4" fill="#2d1a00" stroke="#f59e0b" stroke-width="1"/>
+  <text x="131" y="455" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">git stash / git stash pop</text>
+  <text x="131" y="468" text-anchor="middle" fill="#64748b" font-size="7">switch context without committing half-done work</text>
+
+  <rect x="246" y="440" width="190" height="36" rx="4" fill="#2d1a00" stroke="#f59e0b" stroke-width="1"/>
+  <text x="341" y="455" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">git reset HEAD~1 (local only)</text>
+  <text x="341" y="468" text-anchor="middle" fill="#64748b" font-size="7">undo last commit — keep changes staged</text>
+
+  <rect x="456" y="440" width="190" height="36" rx="4" fill="#2d1a00" stroke="#f59e0b" stroke-width="1"/>
+  <text x="551" y="455" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">git revert &lt;sha&gt; (shared)</text>
+  <text x="551" y="468" text-anchor="middle" fill="#64748b" font-size="7">safe undo on branches others have pulled</text>
+
+  <rect x="666" y="440" width="196" height="36" rx="4" fill="#2d1a00" stroke="#f59e0b" stroke-width="1"/>
+  <text x="764" y="455" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="700">git cherry-pick &lt;sha&gt;</text>
+  <text x="764" y="468" text-anchor="middle" fill="#64748b" font-size="7">hotfix: apply one commit to release branch</text>
+
+  <!-- merge vs rebase -->
+  <rect x="36" y="488" width="420" height="54" rx="4" fill="#0f172a"/>
+  <text x="246" y="504" text-anchor="middle" fill="#f1f5f9" font-size="9" font-weight="700">merge vs rebase</text>
+  <text x="50" y="520" fill="#94a3b8" font-size="8">git merge → preserves history, creates merge commit. Use on main/shared branches.</text>
+  <text x="50" y="533" fill="#94a3b8" font-size="8">git rebase → rewrites history, linear log. Use on feature branches before PR. NEVER rebase shared branches.</text>
+
+  <!-- reset vs revert -->
+  <rect x="466" y="488" width="414" height="54" rx="4" fill="#0f172a"/>
+  <text x="673" y="504" text-anchor="middle" fill="#f1f5f9" font-size="9" font-weight="700">reset vs revert</text>
+  <text x="480" y="520" fill="#94a3b8" font-size="8">git reset → moves HEAD back. Rewrites history. Local branches only.</text>
+  <text x="480" y="533" fill="#94a3b8" font-size="8">git revert → adds a new "undo" commit. History preserved. Safe for shared/remote branches.</text>
+
+  <!-- ══ BOTTOM: pull vs fetch ══ -->
+  <rect x="20" y="564" width="860" height="160" rx="8" fill="#1e293b" stroke="#60a5fa" stroke-width="1"/>
+  <text x="450" y="584" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">Production Tips</text>
+
+  <rect x="36" y="592" width="270" height="122" rx="4" fill="#0f172a"/>
+  <text x="171" y="608" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="600">pull vs fetch</text>
+  <text x="50" y="623" fill="#94a3b8" font-size="8">git fetch  → downloads remote changes</text>
+  <text x="50" y="636" fill="#94a3b8" font-size="8">              but does NOT touch your working code</text>
+  <text x="50" y="649" fill="#86efac" font-size="8">git pull   → fetch + merge in one command</text>
+  <text x="50" y="662" fill="#64748b" font-size="8">Prefer fetch + review then merge on main</text>
+  <text x="50" y="675" fill="#64748b" font-size="8">Use pull for personal feature branches</text>
+  <text x="50" y="706" fill="#64748b" font-size="8">git log --oneline --graph --all</text>
+
+  <rect x="316" y="592" width="270" height="122" rx="4" fill="#0f172a"/>
+  <text x="451" y="608" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="600">switch vs checkout</text>
+  <text x="330" y="623" fill="#94a3b8" font-size="8">git checkout does two things (confusing):</text>
+  <text x="330" y="636" fill="#94a3b8" font-size="8">  1. switches branches</text>
+  <text x="330" y="649" fill="#94a3b8" font-size="8">  2. restores files from commits</text>
+  <text x="330" y="662" fill="#86efac" font-size="8">git switch  → only branch switching (clear)</text>
+  <text x="330" y="675" fill="#86efac" font-size="8">git restore → only file restore (clear)</text>
+  <text x="330" y="688" fill="#64748b" font-size="8">Prefer switch + restore in new projects</text>
+
+  <rect x="596" y="592" width="268" height="122" rx="4" fill="#0f172a"/>
+  <text x="730" y="608" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="600">Tagging releases</text>
+  <text x="610" y="623" fill="#94a3b8" font-size="8">git tag v1.0.0                # lightweight</text>
+  <text x="610" y="636" fill="#94a3b8" font-size="8">git tag -a v1.0.0 -m "Release"# annotated</text>
+  <text x="610" y="649" fill="#86efac" font-size="8">git push origin v1.0.0         # push single tag</text>
+  <text x="610" y="662" fill="#86efac" font-size="8">git push origin --tags         # push all tags</text>
+  <text x="610" y="675" fill="#64748b" font-size="8">Annotated tags are recommended for releases</text>
+  <text x="610" y="688" fill="#64748b" font-size="8">They store tagger, date, and message</text>
+</svg>

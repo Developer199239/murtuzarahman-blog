@@ -1,0 +1,91 @@
+<svg viewBox="0 0 860 520" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="520" fill="#0f172a" rx="12"/>
+  <text x="430" y="32" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">map vs flatMapConcat — When Your Transform Returns a Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- ══ LEFT: map ══ -->
+  <rect x="30" y="46" width="390" height="310" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="30" y="46" width="390" height="28" rx="8" fill="#1e3a5f"/>
+  <rect x="30" y="60" width="390" height="14" fill="#1e3a5f"/>
+  <text x="225" y="64" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">map — transform returns a plain value</text>
+
+  <rect x="46" y="82" width="358" height="80" rx="4" fill="#0f172a"/>
+  <text x="60" y="97" fill="#64748b" font-size="9" font-weight="600">Code:</text>
+  <text x="60" y="111" fill="#94a3b8" font-size="9">apiHelper.getUsers()           // returns Flow&lt;List&lt;ApiUser&gt;&gt;</text>
+  <text x="60" y="124" fill="#94a3b8" font-size="9">    .map { apiUserList -&gt;</text>
+  <text x="72" y="137" fill="#86efac" font-size="9">        convertToUserList(apiUserList)  // returns List&lt;User&gt;</text>
+  <text x="60" y="150" fill="#94a3b8" font-size="9">    }                                  // NOT a Flow</text>
+
+  <rect x="46" y="168" width="358" height="50" rx="4" fill="#1e3a5f"/>
+  <text x="225" y="183" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="700">Transform return type: List&lt;User&gt;</text>
+  <text x="225" y="196" text-anchor="middle" fill="#94a3b8" font-size="9">Simple conversion — no network call, no DB query inside the transform</text>
+  <text x="225" y="209" text-anchor="middle" fill="#64748b" font-size="9">Just in-memory object conversion: ApiUser → User</text>
+
+  <!-- flow diagram -->
+  <rect x="46" y="226" width="358" height="26" rx="4" fill="#1e3a5f"/>
+  <text x="225" y="243" text-anchor="middle" fill="#60a5fa" font-size="9">Flow&lt;List&lt;ApiUser&gt;&gt;  (from network)</text>
+  <line x1="225" y1="252" x2="225" y2="266" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="46" y="266" width="358" height="26" rx="4" fill="#2d1f3a"/>
+  <text x="225" y="283" text-anchor="middle" fill="#c084fc" font-size="9">.map { apiList → userList }   → List&lt;User&gt;  (plain value)</text>
+  <line x1="225" y1="292" x2="225" y2="306" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="46" y="306" width="358" height="26" rx="4" fill="#14532d"/>
+  <text x="225" y="323" text-anchor="middle" fill="#86efac" font-size="9">.collect { showInUI(it) }   ← Flow&lt;List&lt;User&gt;&gt;</text>
+
+  <rect x="46" y="336" width="358" height="14" rx="4" fill="#0f172a"/>
+  <text x="225" y="347" text-anchor="middle" fill="#fcd34d" font-size="9">Use map when: the transform is quick and returns a plain value</text>
+
+  <!-- ══ RIGHT: flatMapConcat ══ -->
+  <rect x="440" y="46" width="390" height="310" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="440" y="46" width="390" height="28" rx="8" fill="#2d1a00"/>
+  <rect x="440" y="60" width="390" height="14" fill="#2d1a00"/>
+  <text x="635" y="64" text-anchor="middle" fill="#fcd34d" font-size="12" font-weight="700">flatMapConcat — transform returns a Flow</text>
+
+  <rect x="456" y="82" width="358" height="80" rx="4" fill="#0f172a"/>
+  <text x="470" y="97" fill="#64748b" font-size="9" font-weight="600">Code:</text>
+  <text x="470" y="111" fill="#94a3b8" font-size="9">apiHelper.getUsers()           // returns Flow&lt;List&lt;ApiUser&gt;&gt;</text>
+  <text x="470" y="124" fill="#94a3b8" font-size="9">    .flatMapConcat { apiUserList -&gt;</text>
+  <text x="482" y="137" fill="#fcd34d" font-size="9">        apiHelper.getMoreDetails(apiUserList)  // returns Flow&lt;...&gt;</text>
+  <text x="470" y="150" fill="#94a3b8" font-size="9">    }                                          // IS a Flow</text>
+
+  <rect x="456" y="168" width="358" height="50" rx="4" fill="#2d1a00"/>
+  <text x="635" y="183" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="700">Transform return type: Flow&lt;...&gt;</text>
+  <text x="635" y="196" text-anchor="middle" fill="#94a3b8" font-size="9">Heavy operation inside — another network call or DB query</text>
+  <text x="635" y="209" text-anchor="middle" fill="#64748b" font-size="9">flatMapConcat flattens the inner Flow into the outer one</text>
+
+  <!-- flow diagram -->
+  <rect x="456" y="226" width="358" height="26" rx="4" fill="#1e3a5f"/>
+  <text x="635" y="243" text-anchor="middle" fill="#60a5fa" font-size="9">Flow&lt;List&lt;ApiUser&gt;&gt;  (first network call)</text>
+  <line x1="635" y1="252" x2="635" y2="266" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="456" y="266" width="358" height="26" rx="4" fill="#2d1a00"/>
+  <text x="635" y="283" text-anchor="middle" fill="#fcd34d" font-size="9">.flatMapConcat { → Flow&lt;Details&gt; }  (second network call)</text>
+  <line x1="635" y1="292" x2="635" y2="306" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="456" y="306" width="358" height="26" rx="4" fill="#14532d"/>
+  <text x="635" y="323" text-anchor="middle" fill="#86efac" font-size="9">.collect { showInUI(it) }  ← receives Details</text>
+
+  <rect x="456" y="336" width="358" height="14" rx="4" fill="#0f172a"/>
+  <text x="635" y="347" text-anchor="middle" fill="#fcd34d" font-size="9">Use flatMapConcat when: transform is a network call / DB query (returns Flow)</text>
+
+  <!-- ══ BOTTOM: decision rule + practice example ══ -->
+  <rect x="30" y="368" width="796" height="80" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="430" y="387" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">Decision Rule + Real-World Example</text>
+
+  <rect x="46" y="394" width="360" height="44" rx="4" fill="#0f172a"/>
+  <text x="60" y="408" fill="#60a5fa" font-size="9" font-weight="600">The rule:</text>
+  <text x="60" y="421" fill="#94a3b8" font-size="9">Does the transform return a plain value?     → use map</text>
+  <text x="60" y="434" fill="#94a3b8" font-size="9">Does the transform return a Flow (DB/network)? → use flatMapConcat</text>
+
+  <rect x="420" y="394" width="390" height="44" rx="4" fill="#0f172a"/>
+  <text x="434" y="408" fill="#fcd34d" font-size="9" font-weight="600">Real use case — Upload image then update profile:</text>
+  <text x="434" y="421" fill="#94a3b8" font-size="9">uploadImage(file)             // returns Flow&lt;String&gt; (URL)</text>
+  <text x="434" y="434" fill="#94a3b8" font-size="9">  .flatMapConcat { url -&gt; updateProfile(url) }  // series — URL required first</text>
+
+  <!-- ══ BOTTOM: flatMapConcat behavior note ══ -->
+  <rect x="30" y="460" width="796" height="48" rx="8" fill="#1e293b"/>
+  <text x="430" y="478" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="600">flatMapConcat behaviour: runs tasks IN SERIES and maintains order</text>
+  <text x="430" y="496" text-anchor="middle" fill="#64748b" font-size="9">First inner Flow must complete before the next one starts. Results arrive in the order tasks were submitted. Use when tasks depend on each other.</text>
+</svg>

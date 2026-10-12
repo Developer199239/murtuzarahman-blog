@@ -1,0 +1,112 @@
+<svg viewBox="0 0 860 520" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="860" height="520" fill="#0f172a" rx="12"/>
+  <text x="430" y="32" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700">Parallel Network Calls and Error Handling in Kotlin Flow</text>
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#475569"/>
+    </marker>
+    <marker id="ag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/>
+    </marker>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <!-- ══ TOP LEFT: zip ══ -->
+  <rect x="30" y="46" width="390" height="200" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+  <text x="225" y="65" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="700">zip — Parallel Network Calls</text>
+
+  <!-- Two parallel streams -->
+  <rect x="46" y="74" width="160" height="28" rx="4" fill="#1e3a5f"/>
+  <text x="126" y="92" text-anchor="middle" fill="#60a5fa" font-size="9">getFootballUsers() (~1s)</text>
+
+  <rect x="224" y="74" width="160" height="28" rx="4" fill="#1e3a5f"/>
+  <text x="304" y="92" text-anchor="middle" fill="#60a5fa" font-size="9">getCricketUsers() (~2s)</text>
+
+  <line x1="126" y1="102" x2="126" y2="120" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="304" y1="102" x2="304" y2="120" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <rect x="46" y="120" width="338" height="28" rx="4" fill="#2d1f3a" stroke="#a855f7" stroke-width="1"/>
+  <text x="215" y="138" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="700">.zip(flow2) { footballList, cricketList → combined }</text>
+
+  <line x1="215" y1="148" x2="215" y2="162" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <rect x="46" y="162" width="338" height="26" rx="4" fill="#14532d"/>
+  <text x="215" y="178" text-anchor="middle" fill="#86efac" font-size="9">.collect { combined → show sports lovers }</text>
+
+  <rect x="46" y="192" width="338" height="44" rx="4" fill="#0f172a"/>
+  <text x="215" y="207" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="600">Both calls run in PARALLEL — total wait = max(1s, 2s) = 2s</text>
+  <text x="215" y="220" text-anchor="middle" fill="#94a3b8" font-size="9">zip pairs values when BOTH are ready. One failure cancels both.</text>
+  <text x="215" y="233" text-anchor="middle" fill="#64748b" font-size="9">Use zip when you need both results to proceed.</text>
+
+  <!-- ══ TOP RIGHT: catch ══ -->
+  <rect x="440" y="46" width="390" height="200" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="635" y="65" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">catch — Error Handling</text>
+
+  <rect x="456" y="74" width="358" height="80" rx="4" fill="#0f172a"/>
+  <text x="470" y="89" fill="#64748b" font-size="9" font-weight="600">Combined catch (one failure cancels all):</text>
+  <text x="470" y="103" fill="#94a3b8" font-size="9">flowOne.zip(flowTwo) { a, b → combine(a, b) }</text>
+  <text x="470" y="116" fill="#94a3b8" font-size="9">    .catch { e →</text>
+  <text x="482" y="129" fill="#ef4444" font-size="9">        uiState.value = Error(e)  // any failure lands here</text>
+  <text x="482" y="142" fill="#64748b" font-size="9">        // BOTH tasks cancelled if one fails</text>
+  <text x="470" y="155" fill="#94a3b8" font-size="9">    }</text>
+
+  <rect x="456" y="158" width="358" height="26" rx="4" fill="#450a0a"/>
+  <text x="635" y="175" text-anchor="middle" fill="#fca5a5" font-size="9">One failure → both tasks cancelled → single error event</text>
+
+  <rect x="456" y="188" width="358" height="50" rx="4" fill="#1c2a1c"/>
+  <text x="635" y="203" text-anchor="middle" fill="#86efac" font-size="9" font-weight="600">✅ When this is the right choice:</text>
+  <text x="635" y="216" text-anchor="middle" fill="#94a3b8" font-size="9">You need both results and a partial result is useless</text>
+  <text x="635" y="229" text-anchor="middle" fill="#94a3b8" font-size="9">(e.g. show sports lovers only if both APIs succeed)</text>
+
+  <!-- ══ BOTTOM LEFT: per-task catch + emitAll ══ -->
+  <rect x="30" y="258" width="390" height="250" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="225" y="278" text-anchor="middle" fill="#86efac" font-size="11" font-weight="700">Per-Task catch + emitAll — Independent Error Handling</text>
+
+  <rect x="46" y="286" width="358" height="106" rx="4" fill="#0f172a"/>
+  <text x="60" y="301" fill="#64748b" font-size="9" font-weight="600">Each flow handles its own failure:</text>
+  <text x="60" y="315" fill="#94a3b8" font-size="9">val flow1 = getFootballUsers()</text>
+  <text x="60" y="328" fill="#94a3b8" font-size="9">    .catch { emitAll(flowOf(emptyList())) }  // fallback on fail</text>
+  <text x="60" y="341" fill="#94a3b8" font-size="9">val flow2 = getCricketUsers()</text>
+  <text x="60" y="354" fill="#94a3b8" font-size="9">    .catch { emitAll(flowOf(emptyList())) }  // fallback on fail</text>
+  <text x="60" y="367" fill="#94a3b8" font-size="9">flow1.zip(flow2) { a, b → combine(a, b) }</text>
+  <text x="60" y="380" fill="#94a3b8" font-size="9">    .collect { showResult(it) }</text>
+
+  <rect x="46" y="396" width="358" height="52" rx="4" fill="#14532d"/>
+  <text x="225" y="411" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">✅ flow1 fails → emits empty list → flow2 still runs</text>
+  <text x="225" y="424" text-anchor="middle" fill="#94a3b8" font-size="9">emitAll(flowOf(emptyList())) replaces the error with a safe default</text>
+  <text x="225" y="437" text-anchor="middle" fill="#94a3b8" font-size="9">The zip sees an empty list from flow1 and the real result from flow2</text>
+  <text x="225" y="450" text-anchor="middle" fill="#64748b" font-size="9">App does not crash. Partial data displayed.</text>
+
+  <rect x="46" y="452" width="358" height="46" rx="4" fill="#0f172a"/>
+  <text x="225" y="467" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="600">emitAll(anotherFlow)</text>
+  <text x="225" y="480" text-anchor="middle" fill="#94a3b8" font-size="9">Emits all values from the given Flow into the current one.</text>
+  <text x="225" y="493" text-anchor="middle" fill="#64748b" font-size="9">Used inside catch to provide fallback data instead of an error.</text>
+
+  <!-- ══ BOTTOM RIGHT: when to use which ══ -->
+  <rect x="440" y="258" width="390" height="250" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="635" y="278" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">When to Use Which</text>
+
+  <rect x="456" y="286" width="358" height="56" rx="4" fill="#1e3a5f"/>
+  <text x="635" y="301" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="700">Use zip when:</text>
+  <text x="635" y="314" text-anchor="middle" fill="#94a3b8" font-size="9">• Both results are required to proceed</text>
+  <text x="635" y="327" text-anchor="middle" fill="#94a3b8" font-size="9">• Calls are independent (neither depends on the other's result)</text>
+  <text x="635" y="340" text-anchor="middle" fill="#94a3b8" font-size="9">• Completing faster than two sequential calls is the goal</text>
+
+  <rect x="456" y="348" width="358" height="56" rx="4" fill="#450a0a"/>
+  <text x="635" y="363" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="700">Use combined catch when:</text>
+  <text x="635" y="376" text-anchor="middle" fill="#94a3b8" font-size="9">• Either failure makes the whole operation meaningless</text>
+  <text x="635" y="389" text-anchor="middle" fill="#94a3b8" font-size="9">• You want a single error state for the whole pipeline</text>
+  <text x="635" y="402" text-anchor="middle" fill="#94a3b8" font-size="9">• Partial results have no value to the user</text>
+
+  <rect x="456" y="410" width="358" height="56" rx="4" fill="#14532d"/>
+  <text x="635" y="425" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700">Use per-task catch + emitAll when:</text>
+  <text x="635" y="438" text-anchor="middle" fill="#94a3b8" font-size="9">• One failure should not cancel the other task</text>
+  <text x="635" y="451" text-anchor="middle" fill="#94a3b8" font-size="9">• Partial results are still useful (show what succeeded)</text>
+  <text x="635" y="464" text-anchor="middle" fill="#94a3b8" font-size="9">• Resilience is more important than all-or-nothing consistency</text>
+
+  <rect x="456" y="472" width="358" height="26" rx="4" fill="#0f172a"/>
+  <text x="635" y="489" text-anchor="middle" fill="#64748b" font-size="9">flatMapConcat for series: call 2 depends on call 1's result → not zip</text>
+</svg>
